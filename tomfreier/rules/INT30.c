@@ -10,7 +10,7 @@
 
 #include <stdio.h>
 #include <stddef.h>
-
+#include <limits.h>
 /**
  * @brief Adds two integers together and prints the sum to console. Will print to stderr if the sum is invalid.
  * 
@@ -26,11 +26,11 @@ void addTwoNumsPreConditionTest(unsigned int a, unsigned int b ){
   /* Precondition to test if the operation is possible and will be in the valid range for an unsigned int*/
   if (UINT_MAX - a < b){
     /* Handle error*/
-    fprintf(stderr, "ERROR: sum of %d + %d is to large to fit in an unsigned int. \nThe sum of these two numbers must be below %d.\n", a, b, UINT_MAX);
+    fprintf(stderr, "ERROR: sum of %u + %u is to large to fit in an unsigned int. \nThe sum of these two numbers must be below %u.\n", a, b, UINT_MAX);
   }
   else{
     sum = a + b;
-    printf("Sum of %d+%d=%d.\n", a,b,sum);
+    printf("Sum of %u+%u=%u.\n", a,b,sum);
   }
 }
 
@@ -52,10 +52,10 @@ void addTwoNumsPostConditionTest(unsigned int a, unsigned int b){
   */
   if(sum < a || sum < b){
     /* Handle error*/
-    fprintf(stderr, "ERROR: sum of %d + %d is to large to fit in an unsigned int. \nThe sum of these two numbers must be below %d.\n", a, b, UINT_MAX);
+    fprintf(stderr, "ERROR: sum of %u + %u is to large to fit in an unsigned int. \nThe sum of these two numbers must be below %u.\n", a, b, UINT_MAX);
   }
   else{
-    printf("Sum of %d+%d=%d.\n", a,b,sum);
+    printf("Sum of %u+%u=%u.\n", a,b,sum);
   }
 }
 
@@ -64,16 +64,18 @@ void addTwoNumsPostConditionTest(unsigned int a, unsigned int b){
  * @return Returns 0 for exit success
  */
 int main(){
-  printf("Addition operation that will fall in the range of an unsigned int.\nExpected Result is for both values to be the same.\n")
+  printf("Addition operation that will fall in the range of an unsigned int.\nExpected Result is for both values to be the same:\n\n");
   printf("Calling precondition test:\n");
   addTwoNumsPreConditionTest(2,3);
   printf("Calling postcondition test.\n");
   addTwoNumsPostConditionTest(2,3);
 
 
-  printf("Addition operation that will NOT fall in the range of unsigned int and cause an unsigned int wrap.\n")
+  printf("\n\nAddition operation that will NOT fall in the range of unsigned int and cause an unsigned int wrap.\n\n");
   printf("Calling precondition test:\n");
-  addTwoNumsPreConditionTest(4000,40000);
+  addTwoNumsPreConditionTest(2,UINT_MAX-1);
   printf("Calling postcondition test.\n");
-  addTwoNumsPostConditionTest(4000,40000);
+  addTwoNumsPostConditionTest(2,UINT_MAX-1);
+
+  return 0;
 }
