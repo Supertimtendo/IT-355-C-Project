@@ -9,13 +9,18 @@
 #define ACCOUNT_H
 
 struct account{
-    char* username;
+    double balance;
+    //TODO: Check correct way to intialize these strings
     char* password;
-    int balance;
+    char* username;
+    char* firstName;
+    char* lastName;
 };
 
-void changeUsername(char* newName);
-void changePassword(char* oldPswd, char* newPswd);
-int checkBalance();
-
+struct account createAccount();
+void changeName(struct account a);
+void changeUsername(struct account a);
+void changePassword(struct account a);
+double checkBalance(struct account a);
+void printAccount(struct account a);
 #endif //ACCOUNT_H
