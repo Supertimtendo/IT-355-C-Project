@@ -38,7 +38,10 @@ void changeName(struct account a){
  * @param a Changes username of account
  */
 void changeUsername(struct account a){
-
+    //TODO: User input for new username
+    char newUsername[] = "FILLER";
+    //Copies contents of new first name to account's uesrname parameter
+    strcpy_s(a.username,strlen(a.username), newUsername);
 }
 
 /**
@@ -46,7 +49,10 @@ void changeUsername(struct account a){
  * @param a Changes password of account
  */
 void changePassword(struct account a){
-
+    //TODO: User input for new password
+    char newPassword[] = "FILLER";
+    //Copies contents of new first name to account's uesrname parameter
+    strcpy_s(a.password,strlen(a.password), newPassword);
 }
 /**
  * Checks balance of account
@@ -54,8 +60,35 @@ void changePassword(struct account a){
  * @return Returns balance value
  */
 double checkBalance(struct account a){
+    return a.balance;
+}
+
+/**
+ * Adds funds to account
+ * @param a Account to add to
+ * @param value Amount to add
+ */
+void addFunds(struct account a, double value){
 
 }
+
+/**
+ * Withdraw funds from account
+ * @param a Account to get money from
+ * @param amount Value to withdraw
+ * @return Returns value
+ */
+double withdrawFunds(struct account a, double amount){
+
+}
+
+/**
+ * Transfer cash from one account to another
+ * @param a SRC account
+ * @param b DST account
+ */
+void transferFunds(struct account a, struct account b);
+
 
 /**
  * Prints contents of account

@@ -23,4 +23,7 @@ void changeUsername(struct account a);
 void changePassword(struct account a);
 double checkBalance(struct account a);
 void printAccount(struct account a);
+void addFunds(struct account a, double value);
+double withdrawFunds(struct account a, double amount);
+void transferFunds(struct account a, struct account b);
 #endif //ACCOUNT_H
