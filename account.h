@@ -8,22 +8,24 @@
 #ifndef ACCOUNT_H
 #define ACCOUNT_H
 
-struct account{
+typedef struct {
     double balance;
+    int accountID;
     //TODO: Check correct way to intialize these strings
     char* password;
     char* username;
     char* firstName;
     char* lastName;
-};
+} account;
 
 struct account createAccount();
 void changeName(struct account a);
-void changeUsername(struct account a);
+void changeUsername(account a);
 void changePassword(struct account a);
 double checkBalance(struct account a);
 void printAccount(struct account a);
 void addFunds(struct account a, double value);
 double withdrawFunds(struct account a, double amount);
-void transferFunds(struct account a, struct account b);
+int getAccountID(struct account a);
+
 #endif //ACCOUNT_H

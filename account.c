@@ -76,18 +76,13 @@ void addFunds(struct account a, double value){
  * Withdraw funds from account
  * @param a Account to get money from
  * @param amount Value to withdraw
- * @return Returns value
+ * @return Returns value of remaining funds
  */
 double withdrawFunds(struct account a, double amount){
 
 }
 
-/**
- * Transfer cash from one account to another
- * @param a SRC account
- * @param b DST account
- */
-void transferFunds(struct account a, struct account b);
+
 
 
 /**
@@ -100,4 +95,8 @@ void printAccount(struct account a){
     printf(a.username);
     printf(a.password);
     printf("%f", a.balance);
+}
+
+int getAccountID(struct account a){
+    return a.accountID;
 }
