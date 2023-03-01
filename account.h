@@ -9,7 +9,7 @@
 #define ACCOUNT_H
 
 typedef struct {
-    double balance;
+    float balance;
     int accountID;
     //TODO: Check correct way to intialize these strings
     char* password;
@@ -24,8 +24,8 @@ void changeUsername(account a);
 void changePassword(struct account a);
 double checkBalance(struct account a);
 void printAccount(struct account a);
-void addFunds(struct account a, double value);
-double withdrawFunds(struct account a, double amount);
+void addFunds(struct account a, float amount);
+double withdrawFunds(struct account a, unsigned int amount);
 int getAccountID(struct account a);
 
 #endif //ACCOUNT_H
