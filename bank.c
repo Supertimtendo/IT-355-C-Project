@@ -7,7 +7,26 @@
 #include <stdio.h>
 #include <string.h>
 #include "bank.h"
+#define MAX_NUM_ACCOUNTS 1000
 
+void intializeAccounts(bank b){
+  /**
+     * @brief Example of recommendation: : INT01-C. Use rsize_t or size_t for all integer values representing the size of an object
+     * 
+     * The size of an object should NOT be represented using an short, int, or other integer types as they may not be large enough to represent the size of the object.
+     * Thus, the size_t is the correct type for representing the size of the object as it is guaranteed to be large enough to represent the size of an object in memory.
+     */
+    size_t accountSize = sizeof(account); // Size of an account
+    size_t allAccountsSize = accountSize * MAX_NUM_ACCOUNTS; // Total size in memory to store all the accounts
+
+    b.accounts = (account *) malloc(allAccountsSize); // dynamically declaring memory for the accounts array
+}
+
+void freeAccounts(bank b){
+  if(free(b.accounts) < 0){
+    fprintf(stderr,"Error in freeing accounts array.\n")
+  }
+}
 // creates account and adds it to the array of accounts
 account createAccount(char* username, char* password, double startingBalance){
 
@@ -48,15 +67,9 @@ bool transferFunds(account from, account to, double transactionAmt){
     return false;
   }
 }
-void deposit(account a, double amount){
-  addFunds(a, amount);
+void deposit(bank b){
+  //TO-DO: get user input for account and amount 
 }
-bool withdrawl(account a, double amount){
-  if(fundsAvailiable(a, amount)){
-    withdrawFunds(a, amount);
-    return true;
-  }
-  else{
-    return false;
-  }
+bool withdrawl(bank b){
+  // To-DO: get user input for account and amount
 }

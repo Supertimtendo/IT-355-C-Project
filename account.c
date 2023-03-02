@@ -8,6 +8,7 @@
 #include <string.h>
 #include "account.h"
 #include <float.h>
+#include <limits.h>
 struct account createAccount(){
     //TODO: Add User input for values
     /**
@@ -41,6 +42,8 @@ void changeUsername(struct account a){
     //TODO: User input for new username
     char newUsername[] = "FILLER";
     //Copies contents of new first name to account's uesrname parameter
+
+    //TODO: Validiate arguments before passing them to the function (will be done by Tom Freier after code for user input is implemented)
     strcpy_s(a.username,strlen(a.username), newUsername);
 }
 
