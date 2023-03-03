@@ -7,25 +7,25 @@
 
 #ifndef ACCOUNT_H
 #define ACCOUNT_H
-
+#define MAX_STRING_LENGTH 25
 typedef struct {
     float balance;
     int accountID;
     //TODO: Check correct way to intialize these strings
-    char* password;
-    char* username;
-    char* firstName;
-    char* lastName;
+    char password[MAX_STRING_LENGTH];
+    char username[MAX_STRING_LENGTH];
+    char firstName[MAX_STRING_LENGTH];
+    char lastName[MAX_STRING_LENGTH];
 } account;
 
-struct account createAccount();
-void changeName(struct account a);
+account createAccount();
+void changeName(account a);
 void changeUsername(account a);
-void changePassword(struct account a);
-double checkBalance(struct account a);
-void printAccount(struct account a);
-void addFunds(struct account a, float amount);
-double withdrawFunds(struct account a, unsigned int amount);
-int getAccountID(struct account a);
+void changePassword(account a);
+double checkBalance(account a);
+void printAccount(account a);
+void addFunds(account a, float amount);
+double withdrawFunds(account a, unsigned int amount);
+int getAccountID(account a);
 
 #endif //ACCOUNT_H

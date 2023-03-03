@@ -1,6 +1,6 @@
 /**
  * @file account.c
- * @author Tim Buranicz
+ * @author Tim Buranicz and Tom Freier
  * @version 1.0
  * Implementation of account
  */
@@ -9,7 +9,7 @@
 #include "account.h"
 #include <float.h>
 #include <limits.h>
-struct account createAccount(){
+account createAccount(){
     //TODO: Add User input for values
     /**
     char firstName[] = "TEMP";
@@ -18,14 +18,14 @@ struct account createAccount(){
     char password[] = "TEMP";
      */
 
-    struct account person;
+    account person;
     return person;
 }
 /**
  * Change an account's name
  * @param a Changes name of account
  */
-void changeName(struct account a){
+void changeName(account a){
     //TODO: User input for new names
     char newFirstName[] = "FILLER";
     //Copies contents of new first name to account's first name parameter
@@ -38,31 +38,56 @@ void changeName(struct account a){
  * Change an account's username
  * @param a Changes username of account
  */
-void changeUsername(struct account a){
+void changeUsername(account a){
     //TODO: User input for new username
     char newUsername[] = "FILLER";
     //Copies contents of new first name to account's uesrname parameter
 
-    //TODO: Validiate arguments before passing them to the function (will be done by Tom Freier after code for user input is implemented)
-    strcpy_s(a.username,strlen(a.username), newUsername);
+    /**
+     * @brief Example of rule: ARR38-C. Guarantee that library functions do not form invalid pointers
+     * 
+     * Before copying the new string the length of the user input must first be checked to see if it will fit in the destination.
+     */
+    size_t usrNameLength = strlen(newUsername);
+    if(usrNameLength < MAX_STRING_LENGTH){
+        size_t sizeInBytes = usrNameLength * sizeof(char);
+        strcpy_s(a.username,sizeInBytes, newUsername);
+    }
+    else{
+        fprintf(stderr,"ERROR: New username %s has %ld characters and exceeds the max username lenght of %d characters.\n",newUsername, usrNameLength, MAX_STRING_LENGTH);
+    }
+    
 }
 
 /**
  * Change an account's password
  * @param a Changes password of account
  */
-void changePassword(struct account a){
+void changePassword(account a){
     //TODO: User input for new password
     char newPassword[] = "FILLER";
     //Copies contents of new first name to account's uesrname parameter
-    strcpy_s(a.password,strlen(a.password), newPassword);
+
+    /**
+     * @brief Example of rule: ARR38-C. Guarantee that library functions do not form invalid pointers
+     * 
+     * Before copying the new string the length of the user input must first be checked to see if it will fit in the destination.
+     */
+    size_t passLength = strlen(newPassword);
+    if(passLength < MAX_STRING_LENGTH){
+        size_t sizeInBytes = passLength * sizeof(char);
+        strcpy_s(a.username,sizeInBytes, newPassword);
+    }
+    else{
+        fprintf(stderr,"ERROR: New password %s has %ld characters and exceeds the max username lenght of %d characters.\n",newPassword, passLength, MAX_STRING_LENGTH);
+    }
 }
 /**
  * Checks balance of account
  * @param a Account to check balance of
  * @return Returns balance value
  */
-double checkBalance(struct account a){
+double checkBalance(account a){
     return a.balance;
 }
 
@@ -71,10 +96,10 @@ double checkBalance(struct account a){
  * @param a Account to add to
  * @param value Amount to add
  */
-void addFunds(struct account a, float amount){
+void addFunds(account a, float amount){
     /* Error checking for negative amount*/
     if(amount < 0){
-        fprintf(stderr, "Error trying to had negative funds.\n")
+        fprintf(stderr, "Error trying to had negative funds.\n");
     }
     /** @brief Example of rule: INT30-C. Ensure that unsigned integer operations do not wrap 
      *  Slight adaptation as the rule is talking about integers, but checking that floats don't wrap is also critical to prevent a misrepresentation of data 
@@ -104,7 +129,7 @@ void addFunds(struct account a, float amount){
  * @param amount Value to withdraw
  * @return Returns value of remaining funds
  */
-double withdrawFunds(struct account a, unsigned int amount){
+double withdrawFunds(account a, unsigned int amount){
     /**
      * @brief Example of rule: INT31-C. Ensure that integer conversions do not result in lost or misinterpreted data
      * 
@@ -119,7 +144,7 @@ double withdrawFunds(struct account a, unsigned int amount){
         if((FLT_MIN+floatAmt) < a.balance){
 
             // In a valid range so we can safely update the value
-            a.blance = a.balance - floatAmt;
+            a.balance = a.balance - floatAmt;
         }
         else{ // Failed precondition test: An underflow will occur if funds withdrawn, so reporting the error
             fprintf(stderr, "ERROR FUNDS COULD NOT BE WITHDRAWN: Subtracting amount of:%u will exceed minimum account balance.\n", amount);
@@ -138,7 +163,7 @@ double withdrawFunds(struct account a, unsigned int amount){
  * Prints contents of account
  * @param a Account to print info of
  */
-void printAccount(struct account a){
+void printAccount(account a){
     printf(a.firstName);
     printf(a.lastName);
     printf(a.username);
@@ -146,6 +171,6 @@ void printAccount(struct account a){
     printf("%f", a.balance);
 }
 
-int getAccountID(struct account a){
+int getAccountID(account a){
     return a.accountID;
 }

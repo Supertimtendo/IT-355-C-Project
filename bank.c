@@ -6,8 +6,9 @@
  */
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include <stdbool.h>
 #include "bank.h"
-#define MAX_NUM_ACCOUNTS 1000
 
 void intializeAccounts(bank b){
   /**
@@ -23,20 +24,37 @@ void intializeAccounts(bank b){
 }
 
 void freeAccounts(bank b){
-  if(free(b.accounts) < 0){
-    fprintf(stderr,"Error in freeing accounts array.\n")
-  }
+  free(b.accounts);
 }
 // creates account and adds it to the array of accounts
-account createAccount(char* username, char* password, double startingBalance){
-
-} 
-
-// prompts user for information about updating their account
-account updateAccount(account a){
-
+void addAccount(bank b){
+  if((b.curAccountCount+1) < b.maxAccounts){
+    b.accounts[b.curAccountCount] = createAccount();
+    b.curAccountCount = b.curAccountCount+1; 
+  }
 }
 
+// prompts user for information about updating their account
+void updateAccount(bank b, account a)
+{
+  
+}
+
+
+account findAccount(bank b, int accID){
+  /* Searching for account */
+  for(int i=0;i<b.curAccountCount;i++){
+    account curAcc = b.accounts[i];
+    if(curAcc.accountID == accID){
+      return curAcc;
+    }
+  }
+
+  // No Account found so returning a dummy account with a -1 account ID
+  account dummyAccount;
+  dummyAccount.accountID = -1;
+  return dummyAccount;
+}
 
 // this function could probably be turned into a macro if we need to fit that rule in
 bool fundsAvailiable(account a, double amount){
@@ -52,24 +70,14 @@ bool fundsAvailiable(account a, double amount){
 
 /**
  * Transfer cash from one account to another
- * @param from SRC account
- * @param to DST account
- * @param transactionAmt amount of funds to be transfered
+
  */
-bool transferFunds(account from, account to, double transactionAmt){
-  if(fundsAvailiable(from, transactionAmt)){
-    from.balance -= transactionAmt;
-    to.balance += transactionAmt;
-    return true;
-  }
-  else{
-    fprintf(stderr, "Error in processing transaction from accID: %d to: %d of amount: %f", from.accountID, to.accountID, transactionAmt);
-    return false;
-  }
+void transferFunds(bank b){
+  //TO-DO: get user input for account to send money to, send money from, and amount.
 }
 void deposit(bank b){
   //TO-DO: get user input for account and amount 
 }
-bool withdrawl(bank b){
+void withdrawl(bank b){
   // To-DO: get user input for account and amount
 }

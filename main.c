@@ -1,12 +1,15 @@
 /**
  * @file main.c
- * @author Tim Buranicz
+ * @author Tim Buranicz and Tom Freier
  * @version 1.0
  * Main file to run
  */
 #include "account.h"
 #include "bank.h"
 #include <stdlib.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <string.h>
 /**
  * Main function
  * @return Return 0 for exit success
@@ -27,6 +30,47 @@ int main(){
      */
     intializeAccounts(isuBank);
     // To stuff with the bank, get user input etc.
+    bool continueRunning = true;
+    char userInput[100]; 
+    while(continueRunning){
+        printf("Select from menu below:\n1. Create an Account.\n2. Update an Account.\n3. Withdraw\n4. Deposit.\n5. Transaction with Another Account.\n6. Exit");
+        scanf("%100s", userInput);
+        if(strncmp(userInput,"1",1) == 0){
+            addAccount(isuBank);
+        }
+        else if(strncmp(userInput, "2",1) == 0){
+            printf("Input Account ID\n:");
+            int accID;
+            if(scanf("%d", accID) < 0){ // invalid input from user
+                fprintf(stderr,"ERROR did not enter integer.\n");
+            }
+            else{ // valid input from user
+                account foundAcc = findAccount(isuBank, accID);
+                if(foundAcc.accountID == -1){ // no account was found
+                    fprintf(stderr,"ERROR no account with id %d found.\n",accID);
+                }
+                else{ // account found
+                    updateAccount(isuBank, foundAcc);
+                }
+            }
+        }
+        else if(strncmp(userInput,"3", 1) ==0){
+            withdrawl(isuBank);
+        }
+        else if(strncmp(userInput, "4", 1) == 0){
+            deposit(isuBank);
+        }
+        else if(strncmp(userInput,"5",1) == 0){
+            transferFunds(isuBank);
+        }
+        else if(strncmp(userInput, "6",1 == 0)){
+            continueRunning = false;
+            printf("Exitting program.\n");
+        }
+        else{
+            printf("Invalid input because select a number from the entry.");
+        }
+    }
 
     // In the same layer of abstraction (the main method), thus succesfully implementing the rule.
     freeAccounts(isuBank);
