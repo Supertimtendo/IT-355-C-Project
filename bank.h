@@ -17,7 +17,7 @@ typedef struct{
 }bank;
 
 account findAccount(bank b, int accID);
-void intializeAccounts(bank b);
+void initializeAccounts(bank b);
 void freeAccounts(bank b);
 void addAccount(bank b); // creates account and adds it to the array of accounts
 void updateAccount(bank b); // prompts user for information about updating their account

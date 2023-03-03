@@ -12,13 +12,13 @@
 #include "bank.h"
 
 /**
- * @brief Intializes the memory to store all accounts in a bank.
+ * @brief Initializes the memory to store all accounts in a bank.
  * 
  * This function uses dynamically allocated memory for the accounts array and follows the recommendations in INT01-C and MEM35-C.
  * 
- * @param b The bank whose accounts are to be intialzied.
+ * @param b The bank whose accounts are to be initialized.
  */
-void intializeAccounts(bank b)
+void initializeAccounts(bank b)
 {
   /**
    * @brief Example of recommendation: INT01-C and MEM35-C
@@ -38,7 +38,6 @@ void intializeAccounts(bank b)
 
 /**
  * @brief Frees the memory used to store the accounts in a bank
- * 
  * @param b The bank whose accounts are to be freed 
  */
 void freeAccounts(bank b)
@@ -75,7 +74,7 @@ void updateAccount(bank b)
 {
   printf("Input Account ID\n:");
   int accID;
-  char userInput[100]; 
+  char *userInput;
   /**
    * TODO: Make this code follow rule ERR34-C. Detect errors when converting a string to a number
    * @Tim Lewis
@@ -147,13 +146,13 @@ bool fundsAvailiable(account a, double amount)
  */
 void transferFunds(bank b)
 {
-  // TO-DO: get user input for account to send money to, send money from, and amount.
+  // TODO: get user input for account to send money to, send money from, and amount.
 }
 void deposit(bank b)
 {
-  // TO-DO: get user input for account and amount
+  // TODO: get user input for account and amount
 }
 void withdrawl(bank b)
 {
-  // To-DO: get user input for account and amount
+  // ToDO: get user input for account and amount
 }

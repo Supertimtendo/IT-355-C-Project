@@ -1,6 +1,6 @@
 /**
  * @file main.c
- * @author Tim Buranicz and Tom Freier
+ * @author Tim Buranicz, Tom Freier
  * @version 1.0
  * Main file to run
  */
@@ -23,18 +23,21 @@ int main(){
     /**
      * @brief Example of recommendation: MEM00-C. Allocate and free memory in the same module, at the same level of abstraction
      * 
-     * C is a memory-unsafe language so the mismangment of memory is common and can lead to freeing memory multiple times leading to undefined behavior.
+     * C is a memory-unsafe language so the mismanagement of memory is common and can lead to freeing memory multiple times leading to undefined behavior.
      * 
      * To combat whenever you declare memory in C you should have no expectation that someone else will free it.
      * This is generally implemented by declaring and freeing memory within the same function (or same layer of abstraction).
      */
-    intializeAccounts(isuBank);
+    initializeAccounts(isuBank);
     // To stuff with the bank, get user input etc.
     bool continueRunning = true;
-    char userInput[100]; 
+    char *userInput;
     while(continueRunning){
         printf("Select from menu below:\n1. Create an Account.\n2. Update an Account.\n3. Withdraw\n4. Deposit.\n5. Transaction with Another Account.\n6. Exit");
         scanf("%100s", userInput);
+
+        //TODO: Potentially make this a switch case??
+
         if(strncmp(userInput,"1",1) == 0){
             addAccount(isuBank);
         }

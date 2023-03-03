@@ -12,11 +12,10 @@
 typedef struct {
     float balance;
     int accountID;
-    //TODO: Check correct way to intialize these strings
-    char password[MAX_STRING_LENGTH];
-    char username[MAX_STRING_LENGTH];
-    char firstName[MAX_STRING_LENGTH];
-    char lastName[MAX_STRING_LENGTH];
+    char *password;
+    char *username;
+    char *firstName;
+    char *lastName;
 } account;
 
 account createAccount();

@@ -1,6 +1,6 @@
 /**
  * @file account.c
- * @author Tim Buranicz and Tom Freier
+ * @author Tim Buranicz, Tom Freier
  * @version 1.0
  * Implementation of account
  */
@@ -9,15 +9,14 @@
 #include "account.h"
 #include <float.h>
 #include <limits.h>
-account createAccount(){
-    //TODO: Add User input for values
-    /**
-    char firstName[] = "TEMP";
-    char lastName[] = "TEMP";
-    char username[] = "TEMP";
-    char password[] = "TEMP";
-     */
 
+/**
+ * Method to take in info that is then stored in an account struct
+ * @return Returns created struct
+ */
+account createAccount(){
+    //TODO: Add User input for initial values
+    //TODO: Make sure inputs are less than MAX_STRING_LENGTH
     account person;
     return person;
 }
@@ -28,11 +27,17 @@ account createAccount(){
 void changeName(account a){
     //TODO: User input for new names
     char newFirstName[] = "FILLER";
-    //Copies contents of new first name to account's first name parameter
-    strcpy_s(a.firstName,strlen(a.firstName), newFirstName);
+    size_t fstNameLength = strlen(newFirstName);
+    if(fstNameLength < MAX_STRING_LENGTH) {
+        //Copies contents of new first name to account's first name parameter
+        strcpy_s(a.firstName, sizeof(a.firstName), newFirstName);
+    }
     char newLastName[] = "FILLER";
-    //Copies contents of new first name to account's last name parameter
-    strcpy_s(a.lastName,strlen(a.lastName), newLastName);
+    size_t lstNameLength = strlen(newLastName);
+    if(lstNameLength < MAX_STRING_LENGTH) {
+        //Copies contents of new first name to account's last name parameter
+        strcpy_s(a.lastName, sizeof(a.lastName), newLastName);
+    }
 }
 /**
  * Change an account's username
@@ -50,8 +55,8 @@ void changeUsername(account a){
      */
     size_t usrNameLength = strlen(newUsername);
     if(usrNameLength < MAX_STRING_LENGTH){
-        size_t sizeInBytes = usrNameLength * sizeof(char);
-        strcpy_s(a.username,sizeInBytes, newUsername);
+        size_t size= sizeof(a.username);
+        strcpy_s(a.username,size, newUsername);
     }
     else{
         fprintf(stderr,"ERROR: New username %s has %ld characters and exceeds the max username lenght of %d characters.\n",newUsername, usrNameLength, MAX_STRING_LENGTH);
@@ -75,8 +80,8 @@ void changePassword(account a){
      */
     size_t passLength = strlen(newPassword);
     if(passLength < MAX_STRING_LENGTH){
-        size_t sizeInBytes = passLength * sizeof(char);
-        strcpy_s(a.username,sizeInBytes, newPassword);
+        size_t size= sizeof(a.password);
+        strcpy_s(a.password,size, newPassword);
     }
     else{
         fprintf(stderr,"ERROR: New password %s has %ld characters and exceeds the max username lenght of %d characters.\n",newPassword, passLength, MAX_STRING_LENGTH);
@@ -112,9 +117,9 @@ void addFunds(account a, float amount){
         /** Example of INT30-C Using Integers.
          *  This is provided to show a concrete example that has the appopriate types.
         */
-        int a = 10000;
-        int b = 50000;
-        if((INT_MAX - a) < b){
+        int b = 10000;
+        int c = 50000;
+        if((INT_MAX - b) < c){
             /* Handle error*/
         } 
     }
@@ -164,10 +169,10 @@ double withdrawFunds(account a, unsigned int amount){
  * @param a Account to print info of
  */
 void printAccount(account a){
-    printf(a.firstName);
-    printf(a.lastName);
-    printf(a.username);
-    printf(a.password);
+    printf("%s", a.firstName);
+    printf("%s", a.lastName);
+    printf("%s", a.username);
+    printf("%s", a.password);
     printf("%f", a.balance);
 }
 
