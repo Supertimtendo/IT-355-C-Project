@@ -8,6 +8,7 @@
 #ifndef ACCOUNT_H
 #define ACCOUNT_H
 #define MAX_STRING_LENGTH 25
+#include <stdbool.h>
 typedef struct {
     float balance;
     int accountID;
@@ -27,5 +28,5 @@ void printAccount(account a);
 void addFunds(account a, float amount);
 double withdrawFunds(account a, unsigned int amount);
 int getAccountID(account a);
-
+bool validatePassword(account a, char* enteredPass);
 #endif //ACCOUNT_H

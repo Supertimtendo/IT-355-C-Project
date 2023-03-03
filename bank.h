@@ -20,7 +20,7 @@ account findAccount(bank b, int accID);
 void intializeAccounts(bank b);
 void freeAccounts(bank b);
 void addAccount(bank b); // creates account and adds it to the array of accounts
-void updateAccount(bank b, account a); // prompts user for information about updating their account
+void updateAccount(bank b); // prompts user for information about updating their account
 bool fundsAvailiable(account a, double amount);
 void transferFunds(bank b);
 void deposit(bank b);

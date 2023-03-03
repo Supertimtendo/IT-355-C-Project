@@ -94,7 +94,7 @@ double checkBalance(account a){
 /**
  * Adds funds to account
  * @param a Account to add to
- * @param value Amount to add
+ * @param amount Amount to add
  */
 void addFunds(account a, float amount){
     /* Error checking for negative amount*/

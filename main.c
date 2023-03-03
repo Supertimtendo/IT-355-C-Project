@@ -39,20 +39,7 @@ int main(){
             addAccount(isuBank);
         }
         else if(strncmp(userInput, "2",1) == 0){
-            printf("Input Account ID\n:");
-            int accID;
-            if(scanf("%d", accID) < 0){ // invalid input from user
-                fprintf(stderr,"ERROR did not enter integer.\n");
-            }
-            else{ // valid input from user
-                account foundAcc = findAccount(isuBank, accID);
-                if(foundAcc.accountID == -1){ // no account was found
-                    fprintf(stderr,"ERROR no account with id %d found.\n",accID);
-                }
-                else{ // account found
-                    updateAccount(isuBank, foundAcc);
-                }
-            }
+            updateAccount(isuBank);
         }
         else if(strncmp(userInput,"3", 1) ==0){
             withdrawl(isuBank);
