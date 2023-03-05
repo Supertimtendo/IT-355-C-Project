@@ -12,6 +12,10 @@
 typedef struct {
     float balance;
     int accountID;
+    //This implementation of the strings is necessary since the sizes and values are not known yet
+    //const keyword cannot be used since modifying them is a feature
+    //STR-30C: This rule must be kept in mind here, as if these are modified directly, then an error will occur
+    //Therefore, copying will be used rather than modifying the literal
     char *password;
     char *username;
     char *firstName;

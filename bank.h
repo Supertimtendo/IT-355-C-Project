@@ -21,9 +21,9 @@ void initializeAccounts(bank b);
 void freeAccounts(bank b);
 void addAccount(bank b); // creates account and adds it to the array of accounts
 void updateAccount(bank b); // prompts user for information about updating their account
-bool fundsAvailiable(account a, double amount);
+bool fundsAvailable(account a, double amount);
 void transferFunds(bank b);
 void deposit(bank b);
-void withdrawl(bank b);
+void withdrawal(bank b);
 
 #endif //BANK_H

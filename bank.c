@@ -126,7 +126,7 @@ account findAccount(bank b, int accID)
 }
 
 // this function could probably be turned into a macro if we need to fit that rule in
-bool fundsAvailiable(account a, double amount)
+bool fundsAvailable(account a, double amount)
 {
   if (amount < 0)
   {
@@ -152,7 +152,7 @@ void deposit(bank b)
 {
   // TODO: get user input for account and amount
 }
-void withdrawl(bank b)
+void withdrawal(bank b)
 {
   // ToDO: get user input for account and amount
 }

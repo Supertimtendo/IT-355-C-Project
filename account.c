@@ -17,6 +17,7 @@
 account createAccount(){
     //TODO: Add User input for initial values
     //TODO: Make sure inputs are less than MAX_STRING_LENGTH
+    //TODO: Maybe change struct to take parameters?
     account person;
     return person;
 }
@@ -28,12 +29,15 @@ void changeName(account a){
     //TODO: User input for new names
     char newFirstName[] = "FILLER";
     size_t fstNameLength = strlen(newFirstName);
+    //STR31-C: Checks for enough space prior to copying
     if(fstNameLength < MAX_STRING_LENGTH) {
         //Copies contents of new first name to account's first name parameter
+        //This uses the secure and narrow version of the function strcpy
         strcpy_s(a.firstName, sizeof(a.firstName), newFirstName);
     }
     char newLastName[] = "FILLER";
     size_t lstNameLength = strlen(newLastName);
+    //STR31-C: Checks for enough space prior to copying
     if(lstNameLength < MAX_STRING_LENGTH) {
         //Copies contents of new first name to account's last name parameter
         strcpy_s(a.lastName, sizeof(a.lastName), newLastName);
@@ -45,8 +49,8 @@ void changeName(account a){
  */
 void changeUsername(account a){
     //TODO: User input for new username
-    char newUsername[] = "FILLER";
-    //Copies contents of new first name to account's uesrname parameter
+    char *newUsername = "FILLER";
+    //Copies contents of new first name to account's username parameter
 
     /**
      * @brief Example of rule: ARR38-C. Guarantee that library functions do not form invalid pointers
@@ -54,6 +58,7 @@ void changeUsername(account a){
      * Before copying the new string the length of the user input must first be checked to see if it will fit in the destination.
      */
     size_t usrNameLength = strlen(newUsername);
+    //STR31-C: Checks for enough space prior to copying
     if(usrNameLength < MAX_STRING_LENGTH){
         size_t size= sizeof(a.username);
         strcpy_s(a.username,size, newUsername);
@@ -79,6 +84,7 @@ void changePassword(account a){
      * Before copying the new string the length of the user input must first be checked to see if it will fit in the destination.
      */
     size_t passLength = strlen(newPassword);
+    //STR31-C: Checks for enough space prior to copying
     if(passLength < MAX_STRING_LENGTH){
         size_t size= sizeof(a.password);
         strcpy_s(a.password,size, newPassword);
