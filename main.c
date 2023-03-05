@@ -19,7 +19,12 @@ int main(){
     isuBank.maxAccounts = MAX_NUM_ACCOUNTS;
     isuBank.curAccountCount = 0;
 
-
+    //TEST CASE for updating info of struct
+    account a = createAccount();
+    changeUsername(&a);
+    changePassword(&a);
+    changeName(&a);
+    printAccount(&a);
 
     /**
      * @brief Example of recommendation: MEM00-C. Allocate and free memory in the same module, at the same level of abstraction
@@ -36,7 +41,7 @@ int main(){
     while(continueRunning){
         printf("Select from menu below:\n1. Create an Account.\n2. Update an Account.\n3. Withdraw\n4. Deposit.\n5. Transaction with Another Account.\n6. Exit");
         //TODO: I/O rule guy check this for better option
-        sscanf("%c", &userInput);
+        scanf("%c", &userInput);
 
         //TODO: Potentially make this a switch case??
 

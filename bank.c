@@ -93,9 +93,9 @@ void updateAccount(bank b)
     }
     else
     { 
-      changeName(foundAcc);
-      changeUsername(foundAcc);
-      changePassword(foundAcc);
+      changeName(&foundAcc);
+      changeUsername(&foundAcc);
+      changePassword(&foundAcc);
     }
   }
 }

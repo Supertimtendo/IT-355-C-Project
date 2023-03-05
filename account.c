@@ -16,7 +16,7 @@
  */
 account createAccount(){
     //TODO: Add User input for initial values
-    //TODO: Make sure inputs are less than MAX_STRING_LENGTH
+    //TODO: Make sure inputs are less than (MAX_STRING_LENGTH -1)
     //TODO: Maybe change struct to take parameters?
     account person;
     return person;
@@ -25,31 +25,31 @@ account createAccount(){
  * Change an account's name
  * @param a Changes name of account
  */
-void changeName(account a){
+void changeName(account *a){
     //TODO: User input for new names
     char newFirstName[] = "FILLER";
     size_t fstNameLength = strlen(newFirstName);
     //STR31-C: Checks for enough space prior to copying
-    if(fstNameLength < MAX_STRING_LENGTH) {
+    if(fstNameLength < (MAX_STRING_LENGTH-1)) {
         //Copies contents of new first name to account's first name parameter
         //This uses the secure and narrow version of the function strcpy
-        strcpy_s(a.firstName, sizeof(a.firstName), newFirstName);
+        strcpy_s(a->firstName, sizeof(a->firstName), newFirstName);
     }
     char newLastName[] = "FILLER";
     size_t lstNameLength = strlen(newLastName);
     //STR31-C: Checks for enough space prior to copying
-    if(lstNameLength < MAX_STRING_LENGTH) {
+    if(lstNameLength < (MAX_STRING_LENGTH-1)) {
         //Copies contents of new first name to account's last name parameter
-        strcpy_s(a.lastName, sizeof(a.lastName), newLastName);
+        strcpy_s(a->lastName, sizeof(a->lastName), newLastName);
     }
 }
 /**
  * Change an account's username
  * @param a Changes username of account
  */
-void changeUsername(account a){
+void changeUsername(account *a){
     //TODO: User input for new username
-    char *newUsername = "FILLER";
+    char newUsername[] = "FILLER";
     //Copies contents of new first name to account's username parameter
 
     /**
@@ -59,9 +59,10 @@ void changeUsername(account a){
      */
     size_t usrNameLength = strlen(newUsername);
     //STR31-C: Checks for enough space prior to copying
-    if(usrNameLength < MAX_STRING_LENGTH){
-        size_t size= sizeof(a.username);
-        strcpy_s(a.username,size, newUsername);
+    if(usrNameLength < (MAX_STRING_LENGTH-1)){
+        printf("True");
+        size_t size= sizeof(a->username);
+        strcpy_s(a->username,sizeof(a->username),newUsername);
     }
     else{
         fprintf(stderr,"ERROR: New username %s has %ld characters and exceeds the max username lenght of %d characters.\n",newUsername, usrNameLength, MAX_STRING_LENGTH);
@@ -73,7 +74,7 @@ void changeUsername(account a){
  * Change an account's password
  * @param a Changes password of account
  */
-void changePassword(account a){
+void changePassword(account *a){
     //TODO: User input for new password
     char newPassword[] = "FILLER";
     //Copies contents of new first name to account's uesrname parameter
@@ -85,9 +86,9 @@ void changePassword(account a){
      */
     size_t passLength = strlen(newPassword);
     //STR31-C: Checks for enough space prior to copying
-    if(passLength < MAX_STRING_LENGTH){
-        size_t size= sizeof(a.password);
-        strcpy_s(a.password,size, newPassword);
+    if(passLength < (MAX_STRING_LENGTH-1)){
+        size_t size= sizeof(a->password);
+        strcpy_s(a->password,size, newPassword);
     }
     else{
         fprintf(stderr,"ERROR: New password %s has %ld characters and exceeds the max username lenght of %d characters.\n",newPassword, passLength, MAX_STRING_LENGTH);
@@ -98,8 +99,8 @@ void changePassword(account a){
  * @param a Account to check balance of
  * @return Returns balance value
  */
-double checkBalance(account a){
-    return a.balance;
+double checkBalance(account *a){
+    return a->balance;
 }
 
 /**
@@ -107,7 +108,7 @@ double checkBalance(account a){
  * @param a Account to add to
  * @param amount Amount to add
  */
-void addFunds(account a, float amount){
+void addFunds(account *a, float amount){
     /* Error checking for negative amount*/
     if(amount < 0){
         fprintf(stderr, "Error trying to had negative funds.\n");
@@ -117,7 +118,7 @@ void addFunds(account a, float amount){
      *  
      *  This is a precondition test to see if the operation is possible and will be in the valid range for a float.
     */
-    else if((FLT_MAX - amount) < a.balance){
+    else if((FLT_MAX - amount) < a->balance){
         fprintf(stderr, "ERROR FUNDS COULD NOT BE ADDED: adding amount of %f will exceed maximum account balance.\n", amount);
 
         /** Example of INT30-C Using Integers.
@@ -130,7 +131,7 @@ void addFunds(account a, float amount){
         } 
     }
     else{
-        a.balance = a.balance + amount; 
+        a->balance = a->balance + amount;
     }
 }
 
@@ -140,7 +141,7 @@ void addFunds(account a, float amount){
  * @param amount Value to withdraw
  * @return Returns value of remaining funds
  */
-double withdrawFunds(account a, unsigned int amount){
+double withdrawFunds(account *a, unsigned int amount){
     /**
      * @brief Example of rule: INT31-C. Ensure that integer conversions do not result in lost or misinterpreted data
      * 
@@ -152,10 +153,10 @@ double withdrawFunds(account a, unsigned int amount){
         float floatAmt = (float) amount;
 
         // Another example of rule INT30-C: Ensuring that an underflow won't occur:
-        if((FLT_MIN+floatAmt) < a.balance){
+        if((FLT_MIN+floatAmt) < a->balance){
 
             // In a valid range so we can safely update the value
-            a.balance = a.balance - floatAmt;
+            a->balance = a->balance - floatAmt;
         }
         else{ // Failed precondition test: An underflow will occur if funds withdrawn, so reporting the error
             fprintf(stderr, "ERROR FUNDS COULD NOT BE WITHDRAWN: Subtracting amount of:%u will exceed minimum account balance.\n", amount);
@@ -174,14 +175,14 @@ double withdrawFunds(account a, unsigned int amount){
  * Prints contents of account
  * @param a Account to print info of
  */
-void printAccount(account a){
-    printf("%s", a.firstName);
-    printf("%s", a.lastName);
-    printf("%s", a.username);
-    printf("%s", a.password);
-    printf("%f", a.balance);
+void printAccount(account *a){
+    printf("First name: %s\n", a->firstName);
+    printf("Last name: %s\n", a->lastName);
+    printf("Username: %s\n", a->username);
+    printf("Password: %s\n", a->password);
+    printf("Balance: %f\n", a->balance);
 }
 
-int getAccountID(account a){
-    return a.accountID;
+int getAccountID(account *a){
+    return a->accountID;
 }
