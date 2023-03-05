@@ -15,10 +15,10 @@
  * @return Returns created struct
  */
 account createAccount(){
-    //TODO: Add User input for initial values
-    //TODO: Make sure inputs are less than (MAX_STRING_LENGTH -1)
-    //TODO: Maybe change struct to take parameters?
     account person;
+    changeName(&person);
+    changeUsername(&person);
+    changePassword(&person);
     return person;
 }
 /**
@@ -27,19 +27,23 @@ account createAccount(){
  */
 void changeName(account *a){
     //TODO: User input for new names
+    //TODO: Add error message if new string is too long
+    //STR31-C: The new char array is null-terminated since no size is given, so the compiler automatically allocates the correct amount of memory
     char newFirstName[] = "FILLER";
     size_t fstNameLength = strlen(newFirstName);
-    //STR31-C: Checks for enough space prior to copying
+    //STR31-C: Checks for enough space prior to copying, including the null terminator
     if(fstNameLength < (MAX_STRING_LENGTH-1)) {
-        //Copies contents of new first name to account's first name parameter
-        //This uses the secure and narrow version of the function strcpy
+        //STR32-C: Since the above char array is properly null-terminated, we do not have to worry about any overflows here
+        //STR38-C: Since all our char arrays are narrow, there is no chance of an error when using functions that expect narrow strings
         strcpy_s(a->firstName, sizeof(a->firstName), newFirstName);
     }
+    //STR31-C: The new char array is null-terminated since no size is given, so the compiler automatically allocates the correct amount of memory
     char newLastName[] = "FILLER";
     size_t lstNameLength = strlen(newLastName);
-    //STR31-C: Checks for enough space prior to copying
+    //STR31-C: Checks for enough space prior to copying, including the null terminator
     if(lstNameLength < (MAX_STRING_LENGTH-1)) {
-        //Copies contents of new first name to account's last name parameter
+        //STR32-C: Since the above char array is properly null-terminated, we do not have to worry about any overflows here
+        //STR38-C: Since all our char arrays are narrow, there is no chance of an error when using functions that expect narrow strings
         strcpy_s(a->lastName, sizeof(a->lastName), newLastName);
     }
 }
@@ -49,6 +53,7 @@ void changeName(account *a){
  */
 void changeUsername(account *a){
     //TODO: User input for new username
+    //STR31-C: The new char array is null-terminated since no size is given, so the compiler automatically allocates the correct amount of memory
     char newUsername[] = "FILLER";
     //Copies contents of new first name to account's username parameter
 
@@ -58,10 +63,11 @@ void changeUsername(account *a){
      * Before copying the new string the length of the user input must first be checked to see if it will fit in the destination.
      */
     size_t usrNameLength = strlen(newUsername);
-    //STR31-C: Checks for enough space prior to copying
+    //STR31-C: Checks for enough space prior to copying, including the null terminator
     if(usrNameLength < (MAX_STRING_LENGTH-1)){
-        printf("True");
         size_t size= sizeof(a->username);
+        //STR32-C: Since the above char array is properly null-terminated, we do not have to worry about any overflows here
+        //STR38-C: Since all our char arrays are narrow, there is no chance of an error when using functions that expect narrow strings
         strcpy_s(a->username,sizeof(a->username),newUsername);
     }
     else{
@@ -76,6 +82,7 @@ void changeUsername(account *a){
  */
 void changePassword(account *a){
     //TODO: User input for new password
+    //STR31-C: The new char array is null-terminated since no size is given, so the compiler automatically allocates the correct amount of memory
     char newPassword[] = "FILLER";
     //Copies contents of new first name to account's uesrname parameter
 
@@ -85,9 +92,11 @@ void changePassword(account *a){
      * Before copying the new string the length of the user input must first be checked to see if it will fit in the destination.
      */
     size_t passLength = strlen(newPassword);
-    //STR31-C: Checks for enough space prior to copying
+    //STR31-C: Checks for enough space prior to copying, including the null terminator
     if(passLength < (MAX_STRING_LENGTH-1)){
         size_t size= sizeof(a->password);
+        //STR32-C: Since the above char array is properly null-terminated, we do not have to worry about any overflows here
+        //STR38-C: Since all our char arrays are narrow, there is no chance of an error when using functions that expect narrow strings
         strcpy_s(a->password,size, newPassword);
     }
     else{
@@ -176,6 +185,7 @@ double withdrawFunds(account *a, unsigned int amount){
  * @param a Account to print info of
  */
 void printAccount(account *a){
+    //STR32-C: Since these strings are null terminated, we can use them here without worry of overflow
     printf("First name: %s\n", a->firstName);
     printf("Last name: %s\n", a->lastName);
     printf("Username: %s\n", a->username);
@@ -183,6 +193,11 @@ void printAccount(account *a){
     printf("Balance: %f\n", a->balance);
 }
 
+/**
+ * Get method
+ * @param a Account to get accountID from
+ * @return Returns accountID
+ */
 int getAccountID(account *a){
     return a->accountID;
 }
