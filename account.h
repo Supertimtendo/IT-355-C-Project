@@ -17,11 +17,14 @@ typedef struct{
  * it is important to make sure not to modify the strings, but instead only copy them. Additionally, when checking strings, make sure
  * to account for the null termination symbol when copying
  */
+ //STR-11-C: We are not initializing any value to these, so this is the best way to handle it
     char firstName[MAX_STRING_LENGTH];
     char lastName[MAX_STRING_LENGTH];
     char password[MAX_STRING_LENGTH];
     char username[MAX_STRING_LENGTH];
 } account;
+
+
 account createAccount();
 void changeName(account *a);
 void changeUsername(account *a);

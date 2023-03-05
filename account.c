@@ -15,11 +15,11 @@
  * @return Returns created struct
  */
 account createAccount(){
-    account person;
-    changeName(&person);
-    changeUsername(&person);
-    changePassword(&person);
-    return person;
+    account a;
+    changeName(&a);
+    changeUsername(&a);
+    changePassword(&a);
+    return a;
 }
 /**
  * Change an account's name
@@ -28,6 +28,8 @@ account createAccount(){
 void changeName(account *a){
     //TODO: User input for new names
     //TODO: Add error message if new string is too long
+
+    //First name change:
     //STR31-C: The new char array is null-terminated since no size is given, so the compiler automatically allocates the correct amount of memory
     char newFirstName[] = "FILLER";
     size_t fstNameLength = strlen(newFirstName);
@@ -35,8 +37,13 @@ void changeName(account *a){
     if(fstNameLength < (MAX_STRING_LENGTH-1)) {
         //STR32-C: Since the above char array is properly null-terminated, we do not have to worry about any overflows here
         //STR38-C: Since all our char arrays are narrow, there is no chance of an error when using functions that expect narrow strings
+        //STR03-C: Since we are specifying the size and already checked the SRC size, the string will not be truncated
+        //STR07-C: We are using strcpy_s to make extra sure to avoid overflows
         strcpy_s(a->firstName, sizeof(a->firstName), newFirstName);
     }
+
+
+    //Last name change:
     //STR31-C: The new char array is null-terminated since no size is given, so the compiler automatically allocates the correct amount of memory
     char newLastName[] = "FILLER";
     size_t lstNameLength = strlen(newLastName);
@@ -44,6 +51,8 @@ void changeName(account *a){
     if(lstNameLength < (MAX_STRING_LENGTH-1)) {
         //STR32-C: Since the above char array is properly null-terminated, we do not have to worry about any overflows here
         //STR38-C: Since all our char arrays are narrow, there is no chance of an error when using functions that expect narrow strings
+        //STR03-C: Since we are specifying the size and already checked the SRC size, the string will not be truncated
+        //STR07-C: We are using strcpy_s to make extra sure to avoid overflows
         strcpy_s(a->lastName, sizeof(a->lastName), newLastName);
     }
 }
@@ -68,12 +77,13 @@ void changeUsername(account *a){
         size_t size= sizeof(a->username);
         //STR32-C: Since the above char array is properly null-terminated, we do not have to worry about any overflows here
         //STR38-C: Since all our char arrays are narrow, there is no chance of an error when using functions that expect narrow strings
-        strcpy_s(a->username,sizeof(a->username),newUsername);
+        //STR03-C: Since we are specifying the size and already checked the SRC size, the string will not be truncated
+        //STR07-C: We are using strcpy_s to make extra sure to avoid overflows
+        strcpy_s(a->username,size,newUsername);
     }
     else{
         fprintf(stderr,"ERROR: New username %s has %ld characters and exceeds the max username lenght of %d characters.\n",newUsername, usrNameLength, MAX_STRING_LENGTH);
     }
-    
 }
 
 /**
@@ -97,12 +107,16 @@ void changePassword(account *a){
         size_t size= sizeof(a->password);
         //STR32-C: Since the above char array is properly null-terminated, we do not have to worry about any overflows here
         //STR38-C: Since all our char arrays are narrow, there is no chance of an error when using functions that expect narrow strings
+        //STR03-C: Since we are specifying the size and already checked the SRC size, the string will not be truncated
+        //STR07-C: We are using strcpy_s to make extra sure to avoid overflows
         strcpy_s(a->password,size, newPassword);
     }
     else{
         fprintf(stderr,"ERROR: New password %s has %ld characters and exceeds the max username lenght of %d characters.\n",newPassword, passLength, MAX_STRING_LENGTH);
     }
 }
+
+
 /**
  * Checks balance of account
  * @param a Account to check balance of
