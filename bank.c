@@ -18,7 +18,7 @@
  * 
  * @param b The bank whose accounts are to be initialized.
  */
-void initializeAccounts(bank b)
+void initializeAccounts(bank *b)
 {
   /**
    * @brief Example of recommendation: INT01-C and MEM35-C
@@ -33,19 +33,19 @@ void initializeAccounts(bank b)
   size_t accountSize = sizeof(account);                    // Size of an account
   size_t allAccountsSize = accountSize * MAX_NUM_ACCOUNTS; // Total size in memory to store all the accounts
 
-  b.accounts = (account *)malloc(allAccountsSize); // dynamically declaring memory for the accounts array
+  b->accounts = (account *)malloc(allAccountsSize); // dynamically declaring memory for the accounts array
 }
 
 /**
  * @brief Frees the memory used to store the accounts in a bank
  * @param b The bank whose accounts are to be freed 
  */
-void freeAccounts(bank b)
+void freeAccounts(bank *b)
 {
   //TODO: check for errors related to this free call @Trevor Murphy
-  free(b.accounts); 
-  b.curAccountCount = 0;
-  b.maxAccounts = 0;
+  free(b->accounts); 
+  b->curAccountCount = 0;
+  b->maxAccounts = 0;
 }
 
 /**
@@ -53,15 +53,15 @@ void freeAccounts(bank b)
  * 
  * @param b The bank to add the account too.
  */
-void addAccount(bank b)
+void addAccount(bank *b)
 {
-  if ((b.curAccountCount) < b.maxAccounts)
+  if ((b->curAccountCount) < b->maxAccounts)
   {
-    b.accounts[b.curAccountCount] = createAccount();
-    b.curAccountCount = b.curAccountCount + 1;
+    b->accounts[b->curAccountCount] = createAccount();
+    b->curAccountCount = b->curAccountCount + 1;
   }
   else{
-    fprintf(stderr,"ERROR: Maximum account limit of %d was reached for the bank. Account could NOT be added.\n", b.maxAccounts);
+    fprintf(stderr,"ERROR: Maximum account limit of %d was reached for the bank. Account could NOT be added.\n", b->maxAccounts);
   }
 }
 
@@ -70,11 +70,15 @@ void addAccount(bank b)
  * 
  * @param b The bank that account is in. 
  */
-void updateAccount(bank b)
+void updateAccount(bank *b)
 {
   printf("Input Account ID\n:");
   int accID;
-  char *userInput;
+  /**
+  * @brief Example of recommendation: MEM00-C. Allocate and free memory in the same module, at the same level of abstraction
+  */ 
+  char *userInput = (char *) malloc(sizeof(char) * 100);
+  
   /**
    * TODO: Make this code follow rule ERR34-C. Detect errors when converting a string to a number
    * @Tim Lewis
@@ -98,6 +102,9 @@ void updateAccount(bank b)
       changePassword(&foundAcc);
     }
   }
+
+  // the memory is free'd in the same module and thus implements the rule.
+  free(userInput);
 }
 
 /**
@@ -107,12 +114,12 @@ void updateAccount(bank b)
  * @param accID The ID of the account to search for.
  * @return The account with the provided account ID if found, otherwise a dummy account with a -1 account ID. 
  */
-account findAccount(bank b, int accID)
+account findAccount(bank *b, int accID)
 {
   /* Searching for account */
-  for (int i = 0; i < b.curAccountCount; i++)
+  for (int i = 0; i < b->curAccountCount; i++)
   {
-    account curAcc = b.accounts[i];
+    account curAcc = b->accounts[i];
     if (curAcc.accountID == accID) // Desired account found
     {
       return curAcc;
@@ -144,15 +151,15 @@ bool fundsAvailable(account a, double amount)
  * Transfer cash from one account to another
 
  */
-void transferFunds(bank b)
+void transferFunds(bank *b)
 {
   // TODO: get user input for account to send money to, send money from, and amount.
 }
-void deposit(bank b)
+void deposit(bank *b)
 {
   // TODO: get user input for account and amount
 }
-void withdrawal(bank b)
+void withdrawal(bank *b)
 {
   // ToDO: get user input for account and amount
 }
