@@ -1,6 +1,11 @@
-int main(){
-    int numArray[4] = {1,2,3,4};
+#include<stdlib.h>
+#include<stdio.h>
 
+int main(){
+    int powersOfTwo[7] = {1,2,4,8,16,32,64};
+    for(int i = 0; i < 6; i++){
+        printf("2 to the power of %d: %d\n", i, powersOfTwo[i]);
+    }
     
     return 0;
 }
