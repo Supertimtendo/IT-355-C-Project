@@ -1,3 +1,9 @@
+/*
+Lucas Beebe
+3/17/23
+IT 355 (001)
+Recs: FIO01 and FIO05
+*/
 #include<stdlib.h>
 #include<stdio.h>
 #include<fcntl.h>

@@ -1,3 +1,9 @@
+/*
+Lucas Beebe
+3/17/23
+IT 355 (001)
+Rec: ARR02
+*/
 #include<stdlib.h>
 #include<stdio.h>
 
