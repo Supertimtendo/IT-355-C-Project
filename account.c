@@ -121,6 +121,7 @@ double checkBalance(account *a){
  */
 void addFunds(account *a, float amount){
     /* Error checking for negative amount*/
+    unsigned int rv = _clearfp();
     if(amount < 0){
         fprintf(stderr, "Error trying to had negative funds.\n");
     }
@@ -142,7 +143,14 @@ void addFunds(account *a, float amount){
         } 
     }
     else{
+    /** @brief Example of rule: EXP30-C. Do not depend on the order of evaluation for the side effects
+     *  This does not depend on the order of opeartion so no side effects should affect the code
+    */
         a->balance = a->balance + amount;
+        rv =_clearfp();
+    /** @brief Example of rule: LP03-C. Detect and handle floating-point errors
+     *  _clearfp() will detect and handle any floating poiutn error that happens. 
+    */
     }
 }
 
