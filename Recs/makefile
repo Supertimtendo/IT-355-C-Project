@@ -7,7 +7,7 @@ ARR02: ARR02.c
 	gcc -o ARR02 ARR02.c
 
 FIO01_05: FIO01_05.c
-	gcc -o FIO01 FIO01.c
+	gcc -o FIO01_05 FIO01_05.c
 
 clean:
 	rm ARR01 ARR02 FIO01_05
