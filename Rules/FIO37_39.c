@@ -1,8 +1,9 @@
 /*
 Lucas Beebe
-3/17/23
+3/19/23
 IT 355 (001)
-Rules: FIO37 and FIO39
+Rules: FIO37-C: Do not assume that fgets() or fgetws() returns a nonempty string when successful
+     and FIO39-C: Do not alternately input and output from a stream without an intervening flush or positioning call
 */
 
 #include <stdlib.h>
@@ -43,7 +44,10 @@ int main(){
 
     //sets the position of the reading to the beginning of the file
     int seekVal = fseek(fp, 0L,SEEK_SET);
-
+    if(seekVal != 0){
+        fprintf(stderr, "fseek() failed to reset position at the beginning of the file");
+        exit(1);
+    }
 
 
     //reading from the file
