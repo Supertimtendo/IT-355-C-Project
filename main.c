@@ -54,13 +54,6 @@ void printProgram(){
 int main(){
     bank isuBank;
 
-    //TEST CASE for updating info of struct
-    // account a = createAccount();
-    // changeUsername(&a);
-    // changePassword(&a);
-    // changeName(&a);
-    // printAccount(&a);
-
     /**
      * @brief Example of recommendation: MEM00-C. Allocate and free memory in the same module, at the same level of abstraction
      * 
@@ -163,7 +156,7 @@ int main(){
          case 4: deposit(&isuBank); break;
          case 5: transferFunds(&isuBank); break;
          case 6: continueRunning = false; printf("Exiting program.\n"); break;
-         default: printf("Invalid input because select a number from the entry.\n");
+         default: printf("Invalid input because select a number from the entry.\n"); break;
         }
 
     }
