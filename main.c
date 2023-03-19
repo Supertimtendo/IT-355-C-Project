@@ -93,5 +93,14 @@ int main(){
     if(atexit(printProgram) != 0){
         fprintf(stderr,"Error from exit handler: printProgram\n");
     }
+
+    /**
+     * @brief Example of rule: FIO23-C. Do not exit with unflushed data on stdout or stderr 
+     * Checking if their is any kind of errror at the end of the stout stream and printing an error message if their is.
+     */
+    if(fclose(stdout) == EOF)
+   {
+     printf("error when closing stream");
+   }
     return 0;
 }
