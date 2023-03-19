@@ -9,8 +9,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <errno.h>
+#include <float.h>
 #include <limits.h>
-
 #include "bank.h"
 
 /**
@@ -163,16 +163,108 @@ bool fundsAvailable(account a, double amount)
 void transferFunds(bank *b)
 {
   // TODO: get user input for account to send money to, send money from, and amount.
-  fprintf(stderr, "Working1\n");
 }
 void deposit(bank *b)
 {
   // TODO: get user input for account and amount
-  fprintf(stderr, "Working2\n");
+  printf("Input Account ID\n:");
+  errno = 0;
+  char *ptr;
+  int accID;
+  /**
+  * @brief Example of recommendation: MEM00-C. Allocate and free memory in the same module, at the same level of abstraction
+  */ 
+  char *userInputChar = (char *) malloc(sizeof(char) * 100);
+  
+  /**
+   * @brief Example of recommendation: ERR34-C. Detect errors when converting a string to a number
+   * 
+   * After reading a char string from the user and coverting it to an int. It must be checked to make sure that the char was converted to an int correctly. 
+   * The if statment will check that the int is a non decimal and that there are no letters in it. 
+   * 
+   */
+  scanf("%s", userInputChar);
+  const long userInputNumber = strtol(userInputChar, &ptr,10);
+  if (ptr == userInputChar||'\0' != *ptr|| LONG_MIN == userInputNumber||LONG_MAX == userInputNumber||ERANGE == errno||userInputNumber > INT_MAX||userInputNumber < INT_MIN)
+  { // invalid input from user
+    fprintf(stderr, "ERROR did not enter integer.\n");
+  }
+  else
+  { // valid input from user
+    accID = (int)userInputNumber;
+    account foundAcc = findAccount(b, accID);
+    if (foundAcc.accountID == -1)
+    { // no account was found
+      fprintf(stderr, "ERROR no account with id %d found.\n", accID);
+    } 
+    else
+    { 
+      //printf("Current Balance:%f \n:",checkBalance(&foundAcc));
+      printf("Enter amount to deposit into account:\n");
+      scanf("%s", userInputChar);
+      const long userInputNumber2 = strtol(userInputChar, &ptr,10);
+      if (ptr == userInputChar||'\0' != *ptr|| LONG_MIN == userInputNumber2||LONG_MAX == userInputNumber2||ERANGE == errno||userInputNumber2 > FLT_MAX||userInputNumber2 < FLT_MIN)
+      { // invalid input from user
+      fprintf(stderr, "ERROR did not enter integer.\n");
+      }
+      else
+      {
+      float amount = (float)userInputNumber2;
+      addFunds(&foundAcc, amount);
+      }
+
+    }
+  }
   
 }
 void withdrawal(bank *b)
 {
   // ToDO: get user input for account and amount
-  fprintf(stderr, "Working3\n");
+  printf("Input Account ID\n:");
+  errno = 0;
+  char *ptr;
+  int accID;
+  /**
+  * @brief Example of recommendation: MEM00-C. Allocate and free memory in the same module, at the same level of abstraction
+  */ 
+  char *userInputChar = (char *) malloc(sizeof(char) * 100);
+  
+  /**
+   * @brief Example of recommendation: ERR34-C. Detect errors when converting a string to a number
+   * 
+   * After reading a char string from the user and coverting it to an int. It must be checked to make sure that the char was converted to an int correctly. 
+   * The if statment will check that the int is a non decimal and that there are no letters in it. 
+   * 
+   */
+  scanf("%s", userInputChar);
+  const long userInputNumber = strtol(userInputChar, &ptr,10);
+  if (ptr == userInputChar||'\0' != *ptr|| LONG_MIN == userInputNumber||LONG_MAX == userInputNumber||ERANGE == errno||userInputNumber > INT_MAX||userInputNumber < INT_MIN)
+  { // invalid input from user
+    fprintf(stderr, "ERROR did not enter integer.\n");
+  }
+  else
+  { // valid input from user
+    accID = (int)userInputNumber;
+    account foundAcc = findAccount(b, accID);
+    if (foundAcc.accountID == -1)
+    { // no account was found
+      fprintf(stderr, "ERROR no account with id %d found.\n", accID);
+    }
+    else
+    { 
+      //printf("Current Balance:%f \n:",checkBalance(&foundAcc));
+      printf("Enter amount to withdrawal from account:\n");
+      scanf("%s", userInputChar);
+      const long userInputNumber2 = strtol(userInputChar, &ptr,10);
+      if (ptr == userInputChar||'\0' != *ptr|| LONG_MIN == userInputNumber||LONG_MAX == userInputNumber||ERANGE == errno||userInputNumber > INT_MAX||userInputNumber < INT_MIN)
+      { // invalid input from user
+      fprintf(stderr, "ERROR did not enter integer.\n");
+      }
+      else
+      {
+      int amount = (int)userInputNumber2;
+      withdrawFunds(&foundAcc, amount);
+      }
+    }
+  }
 }
