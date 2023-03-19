@@ -10,37 +10,51 @@ Rules: FIO37 and FIO39
 #include <string.h>
 
 int main(){
-    char userInputBuffer[1024];
-    char readBuffer[1024];
+    char messageBuffer[100];
+    char readBuffer[100];
     FILE *fp;
     
-    
-
-    fp = fopen("testText.txt", "a+");
+    //opening the file
+    fp = fopen("testText.txt", "w+");
     if(fp == NULL){
         fprintf(stderr, "Error opening the file");
         exit(1);
     }
 
-    for(int i = 0; i < 5; i++){
-        if(fgets(userInputBuffer, sizeof(userInputBuffer),stdin)){
-            char *newLinePointer = strchr(userInputBuffer, '\n');
-            if (newLinePointer){
-                *newLinePointer = '\0';
-            }
-    }
+    //getting input message from the user
+    fprintf(stdout, "Enter a message: ");
+    if(fgets(messageBuffer, sizeof(messageBuffer),stdin)){
+        //checking if the input contain a newline char
+        char *newLinePointer = strchr(messageBuffer, '\n');
+        if (newLinePointer){
+            *newLinePointer = '\0';
+        }
     }
     
+    /*
+    Since the string length is passed as an argument for fwrite, it make it very important that the messageBuffer was
+    checked for any newline values previously as the length could've been wrong.
+    */
+    int bytesWritten = fwrite(messageBuffer,1, strlen(messageBuffer), fp);
 
-    int bytesWritten = fwrite(userInputBuffer,1, sizeof(userInputBuffer), fp);
-    if(bytesWritten != sizeof(userInputBuffer)){
-        fprintf(stderr, "Error writing to the file");
-    }
 
+    
     fflush(fp);
 
-    int bytesRead = fread(readBuffer, sizeof(readBuffer), 1, fp);
-    fprintf(stdin, readBuffer);
+    //sets the position of the reading to the beginning of the file
+    int seekVal = fseek(fp, 0L,SEEK_SET);
+
+
+
+    //reading from the file
+    while(fgets(readBuffer,sizeof(readBuffer),fp)){
+        char *newLinePointer = strchr(readBuffer, '\n');
+        if (newLinePointer){
+            *newLinePointer = '\0';
+        }
+    }
+    printf("This is the readBuffer: %s",readBuffer);
+    
 
     fclose(fp);
 
