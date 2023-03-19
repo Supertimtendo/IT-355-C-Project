@@ -74,6 +74,7 @@ int main(){
     initializeAccounts(&isuBank);
 
     char userChoice[4] = "\0";
+    bool retrieveFroFile = false;
     fprintf(stdout, "Would you like to retrieve previous bank account information? (yes/no): ");
     while(strcmp(userChoice, "yes") != 0 && strcmp(userChoice, "Yes") != 0 && strcmp(userChoice, "no") != 0 && strcmp(userChoice, "No") != 0){
         if(fgets(userChoice, sizeof(userChoice), stdin)){
@@ -88,6 +89,64 @@ int main(){
     }
     if(strcmp(userChoice, "yes") == 0 || strcmp(userChoice, "Yes") == 0){
         printf("\nRetrieving data from file...\n");
+        retrieveFromFile = true;
+        FILE *fp;
+        fp = fopen("bankdata.txt", "r");
+        int accountCounter = 0;
+        char accountId[100];
+        int accountIdVal;
+        char userName[100];
+        char password[100];
+        char firstName[100];
+        char lastName[100];
+        char balance[100];
+        float balanceFloat;
+        while(!feof(fp)){
+            if(fgets(userName, sizeof(userName),fp)){
+                
+            }else{
+                fprintf(stderr, "There was an error reading file with fgets()");
+                exit(1);
+            }
+            
+            if(fgets(password, sizeof(password), fp)){
+                
+            }else{
+                fprintf(stderr, "There was an error reading file with fgets()");
+            }
+            
+            if(fgets(firstName, sizeof(firstName), fp)){
+                
+            }else{
+                fprintf(stderr,"There was an error reading file with fgets()");
+            }
+            
+            if(fgets(lastName, sizeof(lastName), fp)){
+                
+            }else{
+                fprintf(stderr, "There was an error reading file with fgets()");
+            }
+            
+            if(fgets(accountId, sizeof(accountId), fp)){
+                accountIdVal = atoi(accountId);
+            }else{
+                fprintf(stderr, "There was an error reading file with fgets()");
+            }
+            
+            if(fgets(balance, sizeof(balance), fp)){
+                balanceFloat = atof(balance);
+            }else{
+                fprintf(stderr, "There was an error reading file with fgets()");
+            }
+            accountCounter++;
+            fprintf(stdout, "\nAccount %d:\n", accountIdVal);
+            fprintf(stdout, "Username: %s\n", userName);
+            fprintf(stdout, "Password: %s\n", password);
+            fprintf(stdout, "First Name: %s\n", firstName);
+            fprintf(stdout, "Last Name: %s\n", lastName);
+            fprintf(stdout, "Balance: %f\n",balanceFloat);
+        }
+
     }else{
         printf("\nNot retrieving data from file\n");
     }
