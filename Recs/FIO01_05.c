@@ -58,7 +58,7 @@ int main(){
         exit(1);
     }
 
-    char readBuffer[17];
+    char readBuffer[100];
 
     //reading from the file and printing out what was read to stdout
     int bytesRead = read(fd, readBuffer, sizeof(readBuffer));
