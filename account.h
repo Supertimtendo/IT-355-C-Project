@@ -18,14 +18,16 @@ typedef struct{
  * to account for the null termination symbol when copying
  */
  //STR-11-C: We are not initializing any value to these, so this is the best way to handle it
-    char firstName[MAX_STRING_LENGTH];
-    char lastName[MAX_STRING_LENGTH];
-    char password[MAX_STRING_LENGTH];
-    char username[MAX_STRING_LENGTH];
+    char *firstName;
+    char *lastName;
+    char *password;
+    char *username;
 } account;
 
 
 account createAccount();
+void allocateStrings(account *a);
+void freeStrings(account *a);
 void changeName(account *a);
 void changeUsername(account *a);
 void changePassword(account *a);

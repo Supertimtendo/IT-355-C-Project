@@ -53,8 +53,6 @@ void printProgram(){
  */
 int main(){
     bank isuBank;
-    isuBank.maxAccounts = MAX_NUM_ACCOUNTS;
-    isuBank.curAccountCount = 0;
 
     //TEST CASE for updating info of struct
     // account a = createAccount();
