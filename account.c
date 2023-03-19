@@ -9,7 +9,7 @@
 #include "account.h"
 #include <float.h>
 #include <limits.h>
-
+#include <fenv.h>
 /**
  * Method to take in info that is then stored in an account struct
  * @return Returns created struct
@@ -34,7 +34,7 @@ void changeName(account *a){
     //STR31-C: The new char array is null-terminated since no size is given, so the compiler automatically allocates the correct amount of memory
     char newFirstName[] = "FILLER";
     printf("Enter First Name:\n");
-    scanf("%s", &newFirstName);
+    scanf("%s", newFirstName);
     size_t fstNameLength = strlen(newFirstName);
     //STR31-C: Checks for enough space prior to copying, including the null terminator
     if(fstNameLength < (MAX_STRING_LENGTH-1)) {
@@ -42,16 +42,16 @@ void changeName(account *a){
         //STR38-C: Since all our char arrays are narrow, there is no chance of an error when using functions that expect narrow strings
         //STR03-C: Since we are specifying the size and already checked the SRC size, the string will not be truncated
         //STR07-C: We are using strcpy_s to make extra sure to avoid overflows
-        strcpy_s(a->firstName, sizeof(a->firstName), newFirstName);
+        strncpy(a->firstName, newFirstName, fstNameLength);
     }
 
     //Last name change:
     char newLastName[] = "FILLER";
     printf("Enter Last Name:\n");
-    scanf("%s", &newLastName);
+    scanf("%s", newLastName);
     size_t lstNameLength = strlen(newLastName);
     if(lstNameLength < (MAX_STRING_LENGTH-1)) {
-        strcpy_s(a->lastName, sizeof(a->lastName), newLastName);
+        strncpy(a->lastName, newLastName, lstNameLength);
     }
 }
 /**
@@ -62,7 +62,7 @@ void changeUsername(account *a){
     //TODO: User input for new username
     char newUsername[] = "FILLER";
     printf("Enter Username:\n");
-    scanf("%s", &newUsername);
+    scanf("%s", newUsername);
     //Copies contents of new first name to account's username parameter
     /**
      * @brief Example of rule: ARR38-C. Guarantee that library functions do not form invalid pointers
@@ -72,7 +72,7 @@ void changeUsername(account *a){
     size_t usrNameLength = strlen(newUsername);
     if(usrNameLength < (MAX_STRING_LENGTH-1)){
         size_t size= sizeof(a->username);
-        strcpy_s(a->username,size,newUsername);
+        strncpy(a->username,newUsername,size);
     }
     else{
         fprintf(stderr,"ERROR: New username %s has %ld characters and exceeds the max username lenght of %d characters.\n",newUsername, usrNameLength, MAX_STRING_LENGTH);
@@ -88,7 +88,7 @@ void changePassword(account *a){
     char newPassword[] = "FILLER";
     //Copies contents of new first name to account's uesrname parameter
     printf("Enter Password:\n");
-    scanf("%s", &newPassword);
+    scanf("%s", newPassword);
     /**
      * @brief Example of rule: ARR38-C. Guarantee that library functions do not form invalid pointers
      * 
@@ -97,7 +97,7 @@ void changePassword(account *a){
     size_t passLength = strlen(newPassword);
     if(passLength < (MAX_STRING_LENGTH-1)){
         size_t size= sizeof(a->password);
-        strcpy_s(a->password,size, newPassword);
+        strncpy(a->password, newPassword, size);
     }
     else{
         fprintf(stderr,"ERROR: New password %s has %ld characters and exceeds the max username lenght of %d characters.\n",newPassword, passLength, MAX_STRING_LENGTH);
@@ -121,7 +121,7 @@ double checkBalance(account *a){
  */
 void addFunds(account *a, float amount){
     /* Error checking for negative amount*/
-    unsigned int rv = _clearfp();
+    feclearexcept(FE_ALL_EXCEPT);
     if(amount < 0){
         fprintf(stderr, "Error trying to had negative funds.\n");
     }
@@ -147,9 +147,21 @@ void addFunds(account *a, float amount){
      *  This does not depend on the order of opeartion so no side effects should affect the code
     */
         a->balance = a->balance + amount;
-        rv =_clearfp();
+        if(fetestexcept(FE_OVERFLOW)){
+            fprintf(stderr,"Error float overflow");
+        }
+        else if(fetestexcept(FE_INEXACT)){
+            fprintf(stderr,"Error float inexact");
+        }
+        else if(fetestexcept(FE_UNDERFLOW)){
+            fprintf(stderr,"Error float underflow");
+        }
+        else if(fetestexcept(FE_ALL_EXCEPT)){
+            fprintf(stderr,"Error other exception");
+        }
+        feclearexcept(FE_ALL_EXCEPT);
     /** @brief Example of recommendation: LP03-C. Detect and handle floating-point errors
-     *  _clearfp() will detect and handle any floating poiutn error that happens. 
+     *  fetestexcept will detect and handle any floating poiutn error that happens. 
     */
     }
 }
@@ -185,6 +197,7 @@ double withdrawFunds(account *a, unsigned int amount){
     else{
         fprintf(stderr, "ERROR cannot convert %u to a float value.\n", amount);
     }
+    return a->balance;
 }
 
 
