@@ -148,7 +148,7 @@ void addFunds(account *a, float amount){
     */
         a->balance = a->balance + amount;
         rv =_clearfp();
-    /** @brief Example of rule: LP03-C. Detect and handle floating-point errors
+    /** @brief Example of recommendation: LP03-C. Detect and handle floating-point errors
      *  _clearfp() will detect and handle any floating poiutn error that happens. 
     */
     }

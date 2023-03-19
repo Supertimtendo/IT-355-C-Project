@@ -89,7 +89,7 @@ void updateAccount(bank *b)
   char *userInputChar = (char *) malloc(sizeof(char) * 100);
   
   /**
-   * @brief Example of recommendation: ERR34-C. Detect errors when converting a string to a number
+   * @brief Example of rule: ERR34-C. Detect errors when converting a string to a number
    * 
    * After reading a char string from the user and coverting it to an int. It must be checked to make sure that the char was converted to an int correctly. 
    * The if statment will check that the int is a non decimal and that there are no letters in it. 
@@ -133,7 +133,7 @@ account findAccount(bank *b, int accID)
 
   /* Searching for account */
   /**
-   * @brief Example of recommendation: EXP33-C. Do not read uninitialized memory
+   * @brief Example of rule: EXP33-C. Do not read uninitialized memory
    *  This Code find accoutns that have data and are not null. This follwos the rules of not reading uninitialized memory by only using accoutn with infomation in them
    */
   for (int i = 0; i < b->curAccountCount; i++)
@@ -187,7 +187,7 @@ void deposit(bank *b)
   char *userInputChar = (char *) malloc(sizeof(char) * 100);
   
   /**
-   * @brief Example of recommendation: ERR34-C. Detect errors when converting a string to a number
+   * @brief Example of rule: ERR34-C. Detect errors when converting a string to a number
    * 
    * After reading a char string from the user and coverting it to an int. It must be checked to make sure that the char was converted to an int correctly. 
    * The if statment will check that the int is a non decimal and that there are no letters in it. 
@@ -244,7 +244,7 @@ void withdrawal(bank *b)
   char *userInputChar = (char *) malloc(sizeof(char) * 100);
   
   /**
-   * @brief Example of recommendation: ERR34-C. Detect errors when converting a string to a number
+   * @brief Example of rule: ERR34-C. Detect errors when converting a string to a number
    * 
    * After reading a char string from the user and coverting it to an int. It must be checked to make sure that the char was converted to an int correctly. 
    * The if statment will check that the int is a non decimal and that there are no letters in it. 

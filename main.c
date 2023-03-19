@@ -95,7 +95,7 @@ int main(){
     }
 
     /**
-     * @brief Example of rule: FIO23-C. Do not exit with unflushed data on stdout or stderr 
+     * @brief Example of recommendation: FIO23-C. Do not exit with unflushed data on stdout or stderr 
      * Checking if their is any kind of errror at the end of the stout stream and printing an error message if their is.
      */
     if(fclose(stdout) == EOF)
