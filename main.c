@@ -83,7 +83,7 @@ int main(){
             exit(1);
         }
     }
-    if(strcmp(userChocie, "yes") == 0 || strcmp(userChoice, "Yes") == 0){
+    if(strcmp(userChoice, "yes") == 0 || strcmp(userChoice, "Yes") == 0){
         printf("\nRetrieving data from file...\n");
     }else{
         printf("\nNot retrieving data from file\n");
