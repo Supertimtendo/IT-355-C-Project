@@ -12,6 +12,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 
 /**
  * @brief Exit handler that prints the contents of the program upon exiting
@@ -40,7 +41,9 @@ void printProgram(){
         execv(args[0], args);
     }
     else{ // Parent process
-        // Implementation of ENV32-C, this exit handler function returns normally. 
+        // Implementation of ENV32-C, this exit handler function returns normally.
+        wait(&pid); 
+        printf("\nPrinted contents of program. Exiting now.\n");
         return;
     } 
 }
@@ -54,11 +57,11 @@ int main(){
     isuBank.curAccountCount = 0;
 
     //TEST CASE for updating info of struct
-    account a = createAccount();
-    changeUsername(&a);
-    changePassword(&a);
-    changeName(&a);
-    printAccount(&a);
+    // account a = createAccount();
+    // changeUsername(&a);
+    // changePassword(&a);
+    // changeName(&a);
+    // printAccount(&a);
 
     /**
      * @brief Example of recommendation: MEM00-C. Allocate and free memory in the same module, at the same level of abstraction
@@ -119,7 +122,7 @@ int main(){
      * @brief Example of recommendation: FIO23-C. Do not exit with unflushed data on stdout or stderr 
      * Checking if their is any kind of errror at the end of the stout stream and printing an error message if their is.
      */
-    if(fclose(stdout) == EOF)
+    if(fflush(stdout) == EOF)
    {
      printf("error when closing stream");
    }
