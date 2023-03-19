@@ -10,17 +10,39 @@
 #include <float.h>
 #include <limits.h>
 #include <fenv.h>
+#include <stdlib.h>
 /**
  * Method to take in info that is then stored in an account struct
  * @return Returns created struct
  */
 account createAccount(){
     account a;
+    allocateStrings(&a);
     changeName(&a);
     changeUsername(&a);
     changePassword(&a);
-    printf("AccountID:%d\n",getAccountID(&a));
     return a;
+}
+
+/**
+ * Allocates the memory space for the four strings used in the struct
+ * @param a account to allocate the strings for
+*/
+void allocateStrings(account *a){
+    a->firstName = (char *) malloc(MAX_STRING_LENGTH*sizeof(char));
+    a->lastName = (char *) malloc(MAX_STRING_LENGTH*sizeof(char));
+    a->username = (char *) malloc(MAX_STRING_LENGTH*sizeof(char));
+    a->password = (char *) malloc(MAX_STRING_LENGTH*sizeof(char));
+}
+/**
+ * Frees the memory space for the four strings used in the struct
+ * @param a account to free the memory of
+*/
+void freeStrings(account *a){
+    free(a->firstName);
+    free(a->lastName);
+    free(a->username);
+    free(a->password);
 }
 /**
  * Change an account's name
@@ -32,7 +54,7 @@ void changeName(account *a){
     //TODO: Add error message if new string is too long
     //First name change:
     //STR31-C: The new char array is null-terminated since no size is given, so the compiler automatically allocates the correct amount of memory
-    char newFirstName[] = "FILLER";
+    char* newFirstName = (char *) malloc(sizeof(char)*MAX_STRING_LENGTH);
     printf("Enter New First Name:\n");
     scanf("%s", newFirstName);
     size_t fstNameLength = strlen(newFirstName);
@@ -44,15 +66,16 @@ void changeName(account *a){
         //STR07-C: We are using strcpy_s to make extra sure to avoid overflows
         strncpy(a->firstName, newFirstName, fstNameLength);
     }
-
+    free(newFirstName);
     //Last name change:
-    char newLastName[] = "FILLER";
+    char* newLastName = (char *) malloc(sizeof(char)*MAX_STRING_LENGTH);
     printf("Enter New Last Name:\n");
     scanf("%s", newLastName);
     size_t lstNameLength = strlen(newLastName);
     if(lstNameLength < (MAX_STRING_LENGTH-1)) {
         strncpy(a->lastName, newLastName, lstNameLength);
     }
+    free(newLastName);
 }
 /**
  * Change an account's username
@@ -60,7 +83,7 @@ void changeName(account *a){
  */
 void changeUsername(account *a){
     //TODO: User input for new username
-    char newUsername[] = "FILLER";
+    char * newUsername = (char *) malloc(sizeof(char)*MAX_STRING_LENGTH);
     printf("Enter New Username:\n");
     scanf("%s", newUsername);
     //Copies contents of new first name to account's username parameter
@@ -77,6 +100,7 @@ void changeUsername(account *a){
     else{
         fprintf(stderr,"ERROR: New username %s has %ld characters and exceeds the max username lenght of %d characters.\n",newUsername, usrNameLength, MAX_STRING_LENGTH);
     }
+    free(newUsername);
 }
 
 /**
@@ -85,7 +109,7 @@ void changeUsername(account *a){
  */
 void changePassword(account *a){
     //TODO: User input for new password
-    char newPassword[] = "FILLER";
+    char* newPassword = (char *) malloc(sizeof(char)*MAX_STRING_LENGTH);
     //Copies contents of new first name to account's uesrname parameter
     printf("Enter New Password:\n");
     scanf("%s", newPassword);
@@ -102,6 +126,7 @@ void changePassword(account *a){
     else{
         fprintf(stderr,"ERROR: New password %s has %ld characters and exceeds the max username lenght of %d characters.\n",newPassword, passLength, MAX_STRING_LENGTH);
     }
+    free(newPassword);
 }
 
 
