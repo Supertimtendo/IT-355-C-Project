@@ -1,8 +1,8 @@
 /*
 Lucas Beebe
-3/17/23
+3/19/23
 IT 355 (001)
-Rec: ARR01
+Rec: ARR01-C: Do not apply the sizeof operator to a pointer when taking the size of an array
 */
 #include <stdlib.h>
 #include <stdio.h>
@@ -26,7 +26,7 @@ int main(){
     for (size_t i = 0; i < arr_length-1; i++){
         printf("%d, ",num_array[i]);
     }
-    printf("%d", num_array[arr_length-1]);
+    printf("%d", num_array[arr_length-1]); //prints out the last item--doesn't include a comma after
 
     return 0;
 }

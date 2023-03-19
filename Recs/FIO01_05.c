@@ -1,8 +1,12 @@
 /*
 Lucas Beebe
-3/17/23
+3/19/23
 IT 355 (001)
-Recs: FIO01 and FIO05
+Recs: FIO01-C: Be careful using functions that use file names for identification
+ and FIO05-C: Identify files using multiple file attributes
+
+ Both of these recommendations are done throughout this program because they both have to do with ensuring the intial
+ file being used is the same when it is reopened. 
 */
 #include<stdlib.h>
 #include<stdio.h>
@@ -11,13 +15,13 @@ Recs: FIO01 and FIO05
 #include<string.h>
 #include<sys/stat.h>
 
-struct stat original;
-struct stat new;
 
 int main(){
+    struct stat original;
+    struct stat new;
     char *readWriteFile = "testText.txt";
 
-    //FIO01-C: The open() function doesn't rely solely on the filename
+    //opening the file
     int fd = open(readWriteFile, O_WRONLY);
     if(fd < 0){
         perror("open() failed");
@@ -43,7 +47,7 @@ int main(){
         exit(1);
     }
 
-    if (fstat(fd, &new) == -1){
+    if (fstat(fd, &new) < 0){
         perror("fstat() failed");
         exit(1);
     }
@@ -55,6 +59,8 @@ int main(){
     }
 
     char readBuffer[17];
+
+    //reading from the file and printing out what was read to stdout
     int bytesRead = read(fd, readBuffer, sizeof(readBuffer));
     printf("Read from file: %s", readBuffer);
     return 0;
