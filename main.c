@@ -183,6 +183,7 @@ int main(){
         char balanceStr[100];
         sprintf(balanceStr,"%f",acc.balance);
         fwrite(balanceStr,strlen(balanceStr),1,fp);
+        accountCounter--;
     }
 
 
