@@ -11,6 +11,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include <sys/types.h>
+
 /**
  * @brief Exit handler that prints the contents of the program upon exiting
  * 
