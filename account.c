@@ -19,6 +19,7 @@ account createAccount(){
     changeName(&a);
     changeUsername(&a);
     changePassword(&a);
+    printf("AccountID:%d\n",getAccountID(&a));
     return a;
 }
 /**
@@ -27,11 +28,13 @@ account createAccount(){
  */
 void changeName(account *a){
     //TODO: User input for new names
-    //TODO: Add error message if new string is too long
 
+    //TODO: Add error message if new string is too long
     //First name change:
     //STR31-C: The new char array is null-terminated since no size is given, so the compiler automatically allocates the correct amount of memory
     char newFirstName[] = "FILLER";
+    printf("Enter First Name:\n");
+    scanf("%s", &newFirstName);
     size_t fstNameLength = strlen(newFirstName);
     //STR31-C: Checks for enough space prior to copying, including the null terminator
     if(fstNameLength < (MAX_STRING_LENGTH-1)) {
@@ -44,6 +47,8 @@ void changeName(account *a){
 
     //Last name change:
     char newLastName[] = "FILLER";
+    printf("Enter Last Name:\n");
+    scanf("%s", &newLastName);
     size_t lstNameLength = strlen(newLastName);
     if(lstNameLength < (MAX_STRING_LENGTH-1)) {
         strcpy_s(a->lastName, sizeof(a->lastName), newLastName);
@@ -56,6 +61,8 @@ void changeName(account *a){
 void changeUsername(account *a){
     //TODO: User input for new username
     char newUsername[] = "FILLER";
+    printf("Enter Username:\n");
+    scanf("%s", &newUsername);
     //Copies contents of new first name to account's username parameter
     /**
      * @brief Example of rule: ARR38-C. Guarantee that library functions do not form invalid pointers
@@ -80,7 +87,8 @@ void changePassword(account *a){
     //TODO: User input for new password
     char newPassword[] = "FILLER";
     //Copies contents of new first name to account's uesrname parameter
-
+    printf("Enter Password:\n");
+    scanf("%s", &newPassword);
     /**
      * @brief Example of rule: ARR38-C. Guarantee that library functions do not form invalid pointers
      * 
@@ -185,6 +193,7 @@ void printAccount(account *a){
     printf("Username: %s\n", a->username);
     printf("Password: %s\n", a->password);
     printf("Balance: %f\n", a->balance);
+    printf("Account ID: %d\n", a->accountID);
 }
 
 /**
