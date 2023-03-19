@@ -1,243 +1,293 @@
 /**
- * @file account.c
- * @author Tim Buranicz, Tom Freier
+ * @file bank.c
+ * @author Tom Frieer
  * @version 1.0
- * Implementation of account
+ * Implementation of bank
  */
 #include <stdio.h>
 #include <string.h>
-#include "account.h"
+#include <stdlib.h>
+#include <stdbool.h>
+#include <errno.h>
 #include <float.h>
 #include <limits.h>
-#include <fenv.h>
-#include <stdlib.h>
-/**
- * Method to take in info that is then stored in an account struct
- * @return Returns created struct
- */
-account createAccount(){
-    account a;
-    allocateStrings(&a);
-    changeName(&a);
-    changeUsername(&a);
-    changePassword(&a);
-    return a;
-}
-void allocateStrings(account *a){
-    a->firstName = (char *) malloc(MAX_STRING_LENGTH*sizeof(char));
-    a->lastName = (char *) malloc(MAX_STRING_LENGTH*sizeof(char));
-    a->username = (char *) malloc(MAX_STRING_LENGTH*sizeof(char));
-    a->password = (char *) malloc(MAX_STRING_LENGTH*sizeof(char));
-}
-void freeStrings(account *a){
-    free(a->firstName);
-    free(a->lastName);
-    free(a->username);
-    free(a->password);
-}
-/**
- * Change an account's name
- * @param a Changes name of account
- */
-void changeName(account *a){
-    //TODO: User input for new names
+#include "bank.h"
+#include "account.h"
 
-    //TODO: Add error message if new string is too long
-    //First name change:
-    //STR31-C: The new char array is null-terminated since no size is given, so the compiler automatically allocates the correct amount of memory
-    char* newFirstName = (char *) malloc(sizeof(char)*MAX_STRING_LENGTH);
-    printf("Enter New First Name:\n");
-    scanf("%s", newFirstName);
-    size_t fstNameLength = strlen(newFirstName);
-    //STR31-C: Checks for enough space prior to copying, including the null terminator
-    if(fstNameLength < (MAX_STRING_LENGTH-1)) {
-        //STR32-C: Since the above char array is properly null-terminated, we do not have to worry about any overflows here
-        //STR38-C: Since all our char arrays are narrow, there is no chance of an error when using functions that expect narrow strings
-        //STR03-C: Since we are specifying the size and already checked the SRC size, the string will not be truncated
-        //STR07-C: We are using strcpy_s to make extra sure to avoid overflows
-        strncpy(a->firstName, newFirstName, fstNameLength);
-    }
-    free(newFirstName);
-    //Last name change:
-    char* newLastName = (char *) malloc(sizeof(char)*MAX_STRING_LENGTH);
-    printf("Enter New Last Name:\n");
-    scanf("%s", newLastName);
-    size_t lstNameLength = strlen(newLastName);
-    if(lstNameLength < (MAX_STRING_LENGTH-1)) {
-        strncpy(a->lastName, newLastName, lstNameLength);
-    }
-    free(newLastName);
-}
 /**
- * Change an account's username
- * @param a Changes username of account
+ * @brief Initializes the memory to store all accounts in a bank.
+ * 
+ * This function uses dynamically allocated memory for the accounts array and follows the recommendations in INT01-C and MEM35-C.
+ * 
+ * @param b The bank whose accounts are to be initialized.
  */
-void changeUsername(account *a){
-    //TODO: User input for new username
-    char * newUsername = (char *) malloc(sizeof(char)*MAX_STRING_LENGTH);
-    printf("Enter New Username:\n");
-    scanf("%s", newUsername);
-    //Copies contents of new first name to account's username parameter
-    /**
-     * @brief Example of rule: ARR38-C. Guarantee that library functions do not form invalid pointers
-     * 
-     * Before copying the new string the length of the user input must first be checked to see if it will fit in the destination.
+void initializeAccounts(bank *b)
+{
+  /**
+   * @brief Example of recommendation: INT01-C and MEM35-C
+   * INT01-C - Use rsize_t or size_t for all integer values representing the size of an object
+   *
+   * The size of an object should NOT be represented using an short, int, or other integer types as they may not be large enough to represent the size of the object.
+   * Thus, the size_t is the correct type for representing the size of the object as it is guaranteed to be large enough to represent the size of an object in memory.
+   *
+   * MEM35-C - Allocate sufficient memory for an object
+   * TODO: @Trevor Murphy please add some documentation describing why this follows your rule
+   */
+  size_t accountSize = sizeof(account);                    // Size of an account
+  size_t allAccountsSize = accountSize * MAX_NUM_ACCOUNTS; // Total size in memory to store all the accounts
+
+  b->accounts = (account *)malloc(allAccountsSize); // dynamically declaring memory for the accounts array
+}
+
+/**
+ * @brief Frees the memory used to store the accounts in a bank
+ * @param b The bank whose accounts are to be freed 
+ */
+void freeAccounts(bank *b)
+{
+  //TODO: check for errors related to this free call @Trevor Murphy
+  free(b->accounts); 
+  b->curAccountCount = 0;
+  b->maxAccounts = 0;
+}
+
+/**
+ * @brief Creates an account and and adds it to the array of accounts
+ * 
+ * @param b The bank to add the account too.
+ */
+void addAccount(bank *b)
+{
+  /**
+     * @brief Example of rule: EXP45-C. Do not perform assignments in section statements
+     * The section statement does not perfrom aassignment
      */
-    size_t usrNameLength = strlen(newUsername);
-    if(usrNameLength < (MAX_STRING_LENGTH-1)){
-        size_t size= sizeof(a->username);
-        strncpy(a->username,newUsername,size);
-    }
-    else{
-        fprintf(stderr,"ERROR: New username %s has %ld characters and exceeds the max username lenght of %d characters.\n",newUsername, usrNameLength, MAX_STRING_LENGTH);
-    }
-    free(newUsername);
+  if ((b->curAccountCount) < b->maxAccounts)
+  {
+
+    b->accounts[b->curAccountCount] = createAccount();
+    b->curAccountCount = b->curAccountCount + 1;
+  }
+  else{
+    fprintf(stderr,"ERROR: Maximum account limit of %d was reached for the bank. Account could NOT be added.\n", b->maxAccounts);
+  }
 }
 
 /**
- * Change an account's password
- * @param a Changes password of account
+ * @brief Prompts the user for information about updating their account
+ * 
+ * @param b The bank that account is in. 
  */
-void changePassword(account *a){
-    //TODO: User input for new password
-    char* newPassword = (char *) malloc(sizeof(char)*MAX_STRING_LENGTH);
-    //Copies contents of new first name to account's uesrname parameter
-    printf("Enter New Password:\n");
-    scanf("%s", newPassword);
-    /**
-     * @brief Example of rule: ARR38-C. Guarantee that library functions do not form invalid pointers
-     * 
-     * Before copying the new string the length of the user input must first be checked to see if it will fit in the destination.
+void updateAccount(bank *b)
+{
+  printf("Input Account ID\n:");
+  errno = 0;
+  char *ptr;
+  int accID;
+  /**
+  * @brief Example of recommendation: MEM00-C. Allocate and free memory in the same module, at the same level of abstraction
+  */ 
+  char *userInputChar = (char *) malloc(sizeof(char) * 100);
+  
+  /**
+   * @brief Example of rule: ERR34-C. Detect errors when converting a string to a number
+   * 
+   * After reading a char string from the user and coverting it to an int. It must be checked to make sure that the char was converted to an int correctly. 
+   * The if statment will check that the int is a non decimal and that there are no letters in it. 
+   * 
+   */
+  scanf("%s", userInputChar);
+  const long userInputNumber = strtol(userInputChar, &ptr,10);
+  if (ptr == userInputChar||'\0' != *ptr|| LONG_MIN == userInputNumber||LONG_MAX == userInputNumber||ERANGE == errno||userInputNumber > INT_MAX||userInputNumber < INT_MIN)
+  { // invalid input from user
+    fprintf(stderr, "ERROR did not enter integer.\n");
+  }
+  else
+  { // valid input from user
+    accID = (int)userInputNumber;
+    account foundAcc = findAccount(b, accID);
+    if (foundAcc.accountID == -1)
+    { // no account was found
+      fprintf(stderr, "ERROR no account with id %d found.\n", accID);
+    }
+    else
+    { 
+      changeName(&foundAcc);
+      changeUsername(&foundAcc);
+      changePassword(&foundAcc);
+    }
+  }
+
+  // the memory is free'd in the same module and thus implements the rule.
+  free(userInputChar);
+}
+
+/**
+ * @brief Searches for an account in a given bank with the provided account ID.
+ * 
+ * @param b  The bank to search for the account in.
+ * @param accID The ID of the account to search for.
+ * @return The account with the provided account ID if found, otherwise a dummy account with a -1 account ID. 
+ */
+account findAccount(bank *b, int accID)
+{
+
+  /* Searching for account */
+  /**
+   * @brief Example of rule: EXP33-C. Do not read uninitialized memory
+   *  This Code find accoutns that have data and are not null. This follwos the rules of not reading uninitialized memory by only using accoutn with infomation in them
+   */
+  for (int i = 0; i < b->curAccountCount; i++)
+  {
+    account curAcc = b->accounts[i];
+    if (curAcc.accountID == accID) // Desired account found
+    {
+      return curAcc;
+    }
+  }
+
+  // No Account found so returning a dummy account with a -1 account ID
+  account dummyAccount;
+  dummyAccount.accountID = -1;
+  return dummyAccount;
+}
+
+// this function could probably be turned into a macro if we need to fit that rule in
+bool fundsAvailable(account a, double amount)
+{
+  if (amount < 0)
+  {
+    fprintf(stderr, "Error: trying to check if funds availiable on a negative amount.\n");
+    return false;
+  }
+  else
+  {
+    bool availiable = ((a.balance - amount) >= 0);
+    return availiable;
+  }
+}
+
+/**
+ * Transfer cash from one account to another
+
+ */
+void transferFunds(bank *b)
+{
+  // TODO: get user input for account to send money to, send money from, and amount.
+}
+void deposit(bank *b)
+{
+  // TODO: get user input for account and amount
+  printf("Input Account ID\n:");
+  errno = 0;
+  char *ptr;
+  int accID;
+  /**
+  * @brief Example of recommendation: MEM00-C. Allocate and free memory in the same module, at the same level of abstraction
+  */ 
+  char *userInputChar = (char *) malloc(sizeof(char) * 100);
+  
+  /**
+   * @brief Example of rule: ERR34-C. Detect errors when converting a string to a number
+   * 
+   * After reading a char string from the user and coverting it to an int. It must be checked to make sure that the char was converted to an int correctly. 
+   * The if statment will check that the int is a non decimal and that there are no letters in it. 
+   * 
+   */
+  scanf("%s", userInputChar);
+  const long userInputNumber = strtol(userInputChar, &ptr,10);
+  if (ptr == userInputChar||'\0' != *ptr|| LONG_MIN == userInputNumber||LONG_MAX == userInputNumber||ERANGE == errno||userInputNumber > INT_MAX||userInputNumber < INT_MIN)
+  { // invalid input from user
+    fprintf(stderr, "ERROR did not enter integer.\n");
+  }
+  else
+  { // valid input from user
+    accID = (int)userInputNumber;
+    account foundAcc = findAccount(b, accID);
+    if (foundAcc.accountID == -1)
+    { // no account was found
+      fprintf(stderr, "ERROR no account with id %d found.\n", accID);
+    } 
+    else
+    { 
+      //printf("Current Balance:%f \n:",checkBalance(&foundAcc));
+      printf("Enter amount to deposit into account:\n");
+      scanf("%s", userInputChar);
+      const long userInputNumber2 = strtol(userInputChar, &ptr,10);
+       /**
+     * @brief Example of rule: EXP45-C. Do not perform assignments in section statements
+     * The section statement does not perfrom aassignment
      */
-    size_t passLength = strlen(newPassword);
-    if(passLength < (MAX_STRING_LENGTH-1)){
-        size_t size= sizeof(a->password);
-        strncpy(a->password, newPassword, size);
+      if (ptr == userInputChar||'\0' != *ptr|| LONG_MIN == userInputNumber2||LONG_MAX == userInputNumber2||ERANGE == errno||userInputNumber2 > FLT_MAX||userInputNumber2 < FLT_MIN)
+      { // invalid input from user
+      fprintf(stderr, "ERROR did not enter integer.\n");
+      }
+      else
+      {
+      float amount = (float)userInputNumber2;
+      addFunds(&foundAcc, amount);
+      }
+
     }
-    else{
-        fprintf(stderr,"ERROR: New password %s has %ld characters and exceeds the max username lenght of %d characters.\n",newPassword, passLength, MAX_STRING_LENGTH);
-    }
-    free(newPassword);
+  }
+  
 }
-
-
-/**
- * Checks balance of account
- * @param a Account to check balance of
- * @return Returns balance value
- */
-double checkBalance(account *a){
-    return a->balance;
-}
-
-/**
- * Adds funds to account
- * @param a Account to add to
- * @param amount Amount to add
- */
-void addFunds(account *a, float amount){
-    /* Error checking for negative amount*/
-    feclearexcept(FE_ALL_EXCEPT);
-    if(amount < 0){
-        fprintf(stderr, "Error trying to had negative funds.\n");
-    }
-    /** @brief Example of rule: INT30-C. Ensure that unsigned integer operations do not wrap 
-     *  Slight adaptation as the rule is talking about integers, but checking that floats don't wrap is also critical to prevent a misrepresentation of data 
-     *  
-     *  This is a precondition test to see if the operation is possible and will be in the valid range for a float.
-    */
-    else if((FLT_MAX - amount) < a->balance){
-        fprintf(stderr, "ERROR FUNDS COULD NOT BE ADDED: adding amount of %f will exceed maximum account balance.\n", amount);
-
-        /** Example of INT30-C Using Integers.
-         *  This is provided to show a concrete example that has the appopriate types.
-        */
-        int b = 10000;
-        int c = 50000;
-        if((INT_MAX - b) < c){
-            /* Handle error*/
-        } 
-    }
-    else{
-    /** @brief Example of rule: EXP30-C. Do not depend on the order of evaluation for the side effects
-     *  This does not depend on the order of opeartion so no side effects should affect the code
-    */
-        a->balance = a->balance + amount;
-        if(fetestexcept(FE_OVERFLOW)){
-            fprintf(stderr,"Error float overflow");
-        }
-        else if(fetestexcept(FE_INEXACT)){
-            fprintf(stderr,"Error float inexact");
-        }
-        else if(fetestexcept(FE_UNDERFLOW)){
-            fprintf(stderr,"Error float underflow");
-        }
-        else if(fetestexcept(FE_ALL_EXCEPT)){
-            fprintf(stderr,"Error other exception");
-        }
-        feclearexcept(FE_ALL_EXCEPT);
-    /** @brief Example of recommendation: LP03-C. Detect and handle floating-point errors
-     *  fetestexcept will detect and handle any floating poiutn error that happens. 
-    */
-    }
-}
-
-/**
- * Withdraw funds from account
- * @param a Account to get money from
- * @param amount Value to withdraw
- * @return Returns value of remaining funds
- */
-double withdrawFunds(account *a, unsigned int amount){
-    /**
-     * @brief Example of rule: INT31-C. Ensure that integer conversions do not result in lost or misinterpreted data
-     * 
-     * This precondition test is done to ensure that when converted the unsigned int will be in a valid range for the float type.
-     * These two conditions ensure that the unsigned int will fall in the (inclusive) range of [FLT_MIN,FLT_MAX] and thus can be represented as a float.
+void withdrawal(bank *b)
+{
+  // ToDO: get user input for account and amount
+  printf("Input Account ID\n:");
+  errno = 0;
+  char *ptr;
+  int accID;
+  /**
+  * @brief Example of recommendation: MEM00-C. Allocate and free memory in the same module, at the same level of abstraction
+  */ 
+  char *userInputChar = (char *) malloc(sizeof(char) * 100);
+  
+  /**
+   * @brief Example of rule: ERR34-C. Detect errors when converting a string to a number
+   * 
+   * After reading a char string from the user and coverting it to an int. It must be checked to make sure that the char was converted to an int correctly. 
+   * The if statment will check that the int is a non decimal and that there are no letters in it. 
+   * 
+   */
+  scanf("%s", userInputChar);
+  const long userInputNumber = strtol(userInputChar, &ptr,10);
+   /**
+     * @brief Example of rule: EXP45-C. Do not perform assignments in section statements
+     * The section statement does not perfrom aassignment
      */
-    if(amount <= FLT_MAX && amount >= FLT_MIN){
-        // now that we've done the precondition test, can convert it to float type
-        float floatAmt = (float) amount;
-
-        // Another example of rule INT30-C: Ensuring that an underflow won't occur:
-        if((FLT_MIN+floatAmt) < a->balance){
-
-            // In a valid range so we can safely update the value
-            a->balance = a->balance - floatAmt;
-        }
-        else{ // Failed precondition test: An underflow will occur if funds withdrawn, so reporting the error
-            fprintf(stderr, "ERROR FUNDS COULD NOT BE WITHDRAWN: Subtracting amount of:%u will exceed minimum account balance.\n", amount);
-        }
+  if (ptr == userInputChar||'\0' != *ptr|| LONG_MIN == userInputNumber||LONG_MAX == userInputNumber||ERANGE == errno||userInputNumber > INT_MAX||userInputNumber < INT_MIN)
+  { // invalid input from user
+    fprintf(stderr, "ERROR did not enter integer.\n");
+  }
+  else
+  { // valid input from user
+    accID = (int)userInputNumber;
+    account foundAcc = findAccount(b, accID);
+    if (foundAcc.accountID == -1)
+    { // no account was found
+      fprintf(stderr, "ERROR no account with id %d found.\n", accID);
     }
-    // Failed precondition test: Integer conversion will result in a lost of data, so  reporting the error
-    else{
-        fprintf(stderr, "ERROR cannot convert %u to a float value.\n", amount);
+    else
+    { 
+      //printf("Current Balance:%f \n:",checkBalance(&foundAcc));
+      printf("Enter amount to withdrawal from account:\n");
+      scanf("%s", userInputChar);
+      const long userInputNumber2 = strtol(userInputChar, &ptr,10);
+       /**
+     * @brief Example of rule: EXP45-C. Do not perform assignments in section statements
+     * The section statement does not perfrom aassignment
+     */
+      if (ptr == userInputChar||'\0' != *ptr|| LONG_MIN == userInputNumber||LONG_MAX == userInputNumber||ERANGE == errno||userInputNumber > INT_MAX||userInputNumber < INT_MIN)
+      { // invalid input from user
+      fprintf(stderr, "ERROR did not enter integer.\n");
+      }
+      else
+      {
+      int amount = (int)userInputNumber2;
+      withdrawFunds(&foundAcc, amount);
+      }
     }
-    return a->balance;
-}
-
-
-
-
-/**
- * Prints contents of account
- * @param a Account to print info of
- */
-void printAccount(account *a){
-    //STR32-C: Since these strings are null terminated, we can use them here without worry of overflow
-    printf("First name: %s\n", a->firstName);
-    printf("Last name: %s\n", a->lastName);
-    printf("Username: %s\n", a->username);
-    printf("Password: %s\n", a->password);
-    printf("Balance: %f\n", a->balance);
-    printf("Account ID: %d\n", a->accountID);
-}
-
-/**
- * Get method
- * @param a Account to get accountID from
- * @return Returns accountID
- */
-int getAccountID(account *a){
-    return a->accountID;
+  }
 }
