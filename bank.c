@@ -57,8 +57,13 @@ void freeAccounts(bank *b)
  */
 void addAccount(bank *b)
 {
+  /**
+     * @brief Example of rule: EXP45-C. Do not perform assignments in section statements
+     * The section statement does not perfrom aassignment
+     */
   if ((b->curAccountCount) < b->maxAccounts)
   {
+
     b->accounts[b->curAccountCount] = createAccount();
     b->curAccountCount = b->curAccountCount + 1;
   }
@@ -125,7 +130,12 @@ void updateAccount(bank *b)
  */
 account findAccount(bank *b, int accID)
 {
+
   /* Searching for account */
+  /**
+   * @brief Example of recommendation: EXP33-C. Do not read uninitialized memory
+   *  This Code find accoutns that have data and are not null. This follwos the rules of not reading uninitialized memory by only using accoutn with infomation in them
+   */
   for (int i = 0; i < b->curAccountCount; i++)
   {
     account curAcc = b->accounts[i];
@@ -203,6 +213,10 @@ void deposit(bank *b)
       printf("Enter amount to deposit into account:\n");
       scanf("%s", userInputChar);
       const long userInputNumber2 = strtol(userInputChar, &ptr,10);
+       /**
+     * @brief Example of rule: EXP45-C. Do not perform assignments in section statements
+     * The section statement does not perfrom aassignment
+     */
       if (ptr == userInputChar||'\0' != *ptr|| LONG_MIN == userInputNumber2||LONG_MAX == userInputNumber2||ERANGE == errno||userInputNumber2 > FLT_MAX||userInputNumber2 < FLT_MIN)
       { // invalid input from user
       fprintf(stderr, "ERROR did not enter integer.\n");
@@ -238,6 +252,10 @@ void withdrawal(bank *b)
    */
   scanf("%s", userInputChar);
   const long userInputNumber = strtol(userInputChar, &ptr,10);
+   /**
+     * @brief Example of rule: EXP45-C. Do not perform assignments in section statements
+     * The section statement does not perfrom aassignment
+     */
   if (ptr == userInputChar||'\0' != *ptr|| LONG_MIN == userInputNumber||LONG_MAX == userInputNumber||ERANGE == errno||userInputNumber > INT_MAX||userInputNumber < INT_MIN)
   { // invalid input from user
     fprintf(stderr, "ERROR did not enter integer.\n");
@@ -256,6 +274,10 @@ void withdrawal(bank *b)
       printf("Enter amount to withdrawal from account:\n");
       scanf("%s", userInputChar);
       const long userInputNumber2 = strtol(userInputChar, &ptr,10);
+       /**
+     * @brief Example of rule: EXP45-C. Do not perform assignments in section statements
+     * The section statement does not perfrom aassignment
+     */
       if (ptr == userInputChar||'\0' != *ptr|| LONG_MIN == userInputNumber||LONG_MAX == userInputNumber||ERANGE == errno||userInputNumber > INT_MAX||userInputNumber < INT_MIN)
       { // invalid input from user
       fprintf(stderr, "ERROR did not enter integer.\n");
