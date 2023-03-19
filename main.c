@@ -74,7 +74,7 @@ int main(){
     initializeAccounts(&isuBank);
 
     char userChoice[4] = "\0";
-    bool retrieveFroFile = false;
+    bool retrieveFromFile = false;
     fprintf(stdout, "Would you like to retrieve previous bank account information? (yes/no): ");
     while(strcmp(userChoice, "yes") != 0 && strcmp(userChoice, "Yes") != 0 && strcmp(userChoice, "no") != 0 && strcmp(userChoice, "No") != 0){
         if(fgets(userChoice, sizeof(userChoice), stdin)){
