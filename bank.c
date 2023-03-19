@@ -8,6 +8,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <errno.h>
+#include <limits.h>
 
 #include "bank.h"
 
@@ -73,23 +75,30 @@ void addAccount(bank *b)
 void updateAccount(bank *b)
 {
   printf("Input Account ID\n:");
+  errno = 0;
+  char *ptr;
   int accID;
   /**
   * @brief Example of recommendation: MEM00-C. Allocate and free memory in the same module, at the same level of abstraction
   */ 
-  char *userInput = (char *) malloc(sizeof(char) * 100);
+  char *userInputChar = (char *) malloc(sizeof(char) * 100);
   
   /**
-   * TODO: Make this code follow rule ERR34-C. Detect errors when converting a string to a number
-   * @Tim Lewis
+   * @brief Example of recommendation: ERR34-C. Detect errors when converting a string to a number
+   * 
+   * After reading a char string from the user and coverting it to an int. It must be checked to make sure that the char was converted to an int correctly. 
+   * The if statment will check that the int is a non decimal and that there are no letters in it. 
    * 
    */
-  if (scanf("%d", accID) < 0)
+  scanf("%s", userInputChar);
+  const long userInputNumber = strtol(userInputChar, &ptr,10);
+  if (ptr == userInputChar||'\0' != *ptr|| LONG_MIN == userInputNumber||LONG_MAX == userInputNumber||ERANGE == errno||userInputNumber > INT_MAX||userInputNumber < INT_MIN)
   { // invalid input from user
     fprintf(stderr, "ERROR did not enter integer.\n");
   }
   else
   { // valid input from user
+    accID = (int)userInputNumber;
     account foundAcc = findAccount(b, accID);
     if (foundAcc.accountID == -1)
     { // no account was found
@@ -104,7 +113,7 @@ void updateAccount(bank *b)
   }
 
   // the memory is free'd in the same module and thus implements the rule.
-  free(userInput);
+  free(userInputChar);
 }
 
 /**
@@ -154,12 +163,16 @@ bool fundsAvailable(account a, double amount)
 void transferFunds(bank *b)
 {
   // TODO: get user input for account to send money to, send money from, and amount.
+  fprintf(stderr, "Working1\n");
 }
 void deposit(bank *b)
 {
   // TODO: get user input for account and amount
+  fprintf(stderr, "Working2\n");
+  
 }
 void withdrawal(bank *b)
 {
   // ToDO: get user input for account and amount
+  fprintf(stderr, "Working3\n");
 }
