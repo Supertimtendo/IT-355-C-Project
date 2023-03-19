@@ -33,7 +33,7 @@ void changeName(account *a){
     //First name change:
     //STR31-C: The new char array is null-terminated since no size is given, so the compiler automatically allocates the correct amount of memory
     char newFirstName[] = "FILLER";
-    printf("Enter First Name:\n");
+    printf("Enter New First Name:\n");
     scanf("%s", newFirstName);
     size_t fstNameLength = strlen(newFirstName);
     //STR31-C: Checks for enough space prior to copying, including the null terminator
@@ -47,7 +47,7 @@ void changeName(account *a){
 
     //Last name change:
     char newLastName[] = "FILLER";
-    printf("Enter Last Name:\n");
+    printf("Enter New Last Name:\n");
     scanf("%s", newLastName);
     size_t lstNameLength = strlen(newLastName);
     if(lstNameLength < (MAX_STRING_LENGTH-1)) {
@@ -61,7 +61,7 @@ void changeName(account *a){
 void changeUsername(account *a){
     //TODO: User input for new username
     char newUsername[] = "FILLER";
-    printf("Enter Username:\n");
+    printf("Enter New Username:\n");
     scanf("%s", newUsername);
     //Copies contents of new first name to account's username parameter
     /**
@@ -87,7 +87,7 @@ void changePassword(account *a){
     //TODO: User input for new password
     char newPassword[] = "FILLER";
     //Copies contents of new first name to account's uesrname parameter
-    printf("Enter Password:\n");
+    printf("Enter New Password:\n");
     scanf("%s", newPassword);
     /**
      * @brief Example of rule: ARR38-C. Guarantee that library functions do not form invalid pointers

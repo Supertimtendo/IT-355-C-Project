@@ -69,6 +69,25 @@ int main(){
      * This is generally implemented by declaring and freeing memory within the same function (or same layer of abstraction).
      */
     initializeAccounts(&isuBank);
+
+    char userChoice[4] = "\0";
+    fprintf(stdout, "Would you like to retrieve previous bank account information? (yes/no): ");
+    while(strcmp(userChoice, "yes") != 0 && strcmp(userChoice, "Yes") != 0 && strcmp(userChoice, "no") != 0 && strcmp(userChoice, "No") != 0){
+        if(fgets(userChoice, sizeof(userChoice), stdin)){
+            char *newLinePointer = strchr(userChoice, '\n');
+            if(newLinePointer){
+                *newLinePointer = '\0';
+            }
+        }else{
+            fprintf(stderr, "Error: fgets() failure during user input retrieval");
+            exit(1);
+        }
+    }
+    if(strcmp(userChocie, "yes") == 0 || strcmp(userChoice, "Yes") == 0){
+        printf("\nRetrieving data from file...\n");
+    }else{
+        printf("\nNot retrieving data from file\n");
+    }
     // Do stuff with the bank, get user input etc.
     bool continueRunning = true;
     int userInput;
