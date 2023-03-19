@@ -12,6 +12,7 @@
 #include <float.h>
 #include <limits.h>
 #include "bank.h"
+#include "account.h"
 
 /**
  * @brief Initializes the memory to store all accounts in a bank.
