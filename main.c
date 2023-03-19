@@ -168,6 +168,24 @@ int main(){
 
     }
 
+    int accountCounter = isuBank.curAccountCount;
+    while(accountCounter != 0){
+        account acc = isuBank.accounts[accountCounter-1];
+        FILE *fp;
+        fp = fopen("bankdata.txt","w");
+        fwrite(acc.username,1,strlen(acc.username),fp);
+        fwrite(acc.password,1,strlen(acc.password),fp);
+        fwrite(acc.firstName, 1, strlen(acc.firstName), fp);
+        fwrite(acc.lastName, 1, strlen(acc.lastName), fp);
+        char accountIDStr[100];
+        sprintf(accountIDStr, "%d",acc.accountID);
+        fwrite(accountIDStr,strlen(accountIDStr),1,fp);
+        char balanceStr[100];
+        sprintf(balanceStr,"%f",acc.balance);
+        fwrite(balanceStr,strlen(balanceStr),1,fp);
+    }
+
+
     // In the same layer of abstraction (the main method), thus successfully implementing the rule MEM00-C
     freeAccounts(&isuBank);
 
