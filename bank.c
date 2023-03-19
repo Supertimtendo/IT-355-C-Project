@@ -33,6 +33,8 @@ void initializeAccounts(bank *b)
    * MEM35-C - Allocate sufficient memory for an object
    * TODO: @Trevor Murphy please add some documentation describing why this follows your rule
    */
+  b->curAccountCount = 0;
+  b->maxAccounts = MAX_NUM_ACCOUNTS;
   size_t accountSize = sizeof(account);                    // Size of an account
   size_t allAccountsSize = accountSize * MAX_NUM_ACCOUNTS; // Total size in memory to store all the accounts
 
@@ -46,6 +48,10 @@ void initializeAccounts(bank *b)
 void freeAccounts(bank *b)
 {
   //TODO: check for errors related to this free call @Trevor Murphy
+  for(int i=0;i<b->curAccountCount;i++){
+    account a = b->accounts[i];
+    freeStrings(&a);
+  }
   free(b->accounts); 
   b->curAccountCount = 0;
   b->maxAccounts = 0;
@@ -64,9 +70,13 @@ void addAccount(bank *b)
      */
   if ((b->curAccountCount) < b->maxAccounts)
   {
-
-    b->accounts[b->curAccountCount] = createAccount();
-    b->curAccountCount = b->curAccountCount + 1;
+    int curCount = b->curAccountCount; 
+    account a = createAccount();
+    a.accountID = curCount;
+    b->accounts[curCount] = a;
+    b->accounts[curCount].accountID = curCount; 
+    b->curAccountCount = curCount + 1;
+    printf("AccountID:%d\n",a.accountID);
   }
   else{
     fprintf(stderr,"ERROR: Maximum account limit of %d was reached for the bank. Account could NOT be added.\n", b->maxAccounts);
@@ -83,7 +93,6 @@ void updateAccount(bank *b)
   printf("Input Account ID\n:");
   errno = 0;
   char *ptr;
-  int accID;
   /**
   * @brief Example of recommendation: MEM00-C. Allocate and free memory in the same module, at the same level of abstraction
   */ 
@@ -104,7 +113,8 @@ void updateAccount(bank *b)
   }
   else
   { // valid input from user
-    accID = (int)userInputNumber;
+    int accID = (int) userInputNumber;
+    printf("%d\n",accID);
     account foundAcc = findAccount(b, accID);
     if (foundAcc.accountID == -1)
     { // no account was found
@@ -290,4 +300,5 @@ void withdrawal(bank *b)
       }
     }
   }
+  free(userInputChar);
 }
