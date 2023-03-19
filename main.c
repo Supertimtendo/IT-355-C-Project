@@ -69,36 +69,22 @@ int main(){
     initializeAccounts(&isuBank);
     // Do stuff with the bank, get user input etc.
     bool continueRunning = true;
-    char userInput;
+    int userInput;
     while(continueRunning){
-        printf("Select from menu below:\n1. Create an Account.\n2. Update an Account.\n3. Withdraw\n4. Deposit.\n5. Transaction with Another Account.\n6. Exit");
+        printf("Select from menu below:\n1. Create an Account.\n2. Update an Account.\n3. Withdraw\n4. Deposit.\n5. Transaction with Another Account.\n6. Exit\n");
         //TODO: I/O rule guy check this for better option
-        scanf("%c", &userInput);
+        scanf("%d", &userInput);
 
-        //TODO: Potentially make this a switch case??
+        switch(userInput){
+         case 1: addAccount(&isuBank); break;
+         case 2: updateAccount(&isuBank); break;
+         case 3: withdrawal(&isuBank); break;
+         case 4: deposit(&isuBank); break;
+         case 5: transferFunds(&isuBank); break;
+         case 6: continueRunning = false; printf("Exiting program.\n"); break;
+         default: printf("Invalid input because select a number from the entry.\n");
+        }
 
-        if(userInput=='1'){
-            addAccount(&isuBank);
-        }
-        else if(userInput=='2'){
-            updateAccount(&isuBank);
-        }
-        else if(userInput=='3'){
-            withdrawal(&isuBank);
-        }
-        else if(userInput=='4'){
-            deposit(&isuBank);
-        }
-        else if(userInput=='5'){
-            transferFunds(&isuBank);
-        }
-        else if(userInput=='6'){
-            continueRunning = false;
-            printf("Exiting program.\n");
-        }
-        else{
-            printf("Invalid input because select a number from the entry.");
-        }
     }
 
     // In the same layer of abstraction (the main method), thus successfully implementing the rule MEM00-C
