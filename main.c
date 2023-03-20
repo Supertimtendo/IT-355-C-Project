@@ -1,6 +1,6 @@
 /**
  * @file main.c
- * @author Tim Buranicz, Tom Freier
+ * @author Tim Buranicz, Tom Freier, Lucas Beebe
  * @version 1.0
  * Main file to run
  */
@@ -29,7 +29,13 @@ void printProgram(){
      * 
      * This is a succesfuly implementation because it uses the execv function instead of system.
      */
-    char programName[] = "main.c";
+    /**
+     * @brief Example of recommendation: ARR02-C. Explicitly specify array bounds, even if implicitly defined by an initializer
+     * 
+     * The character array programName is initialized with the string "main.c", but the size 
+     * of the array is still specified as 6 because it helps the compiler send warnings and prevent/detect errors
+    */
+    char programName[6] = "main.c";
     char* args[3] = {"/bin/cat",programName,NULL};
     pid_t pid = fork(); // creating a child process to run the execv command
     if(pid == -1){ // Error
