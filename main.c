@@ -236,7 +236,7 @@ int main(){
         fprintf(stderr, "fstat() failed");
     }
 
-    if(original.st_dev != new.st_dev) || (original.st_ino != new.st_ino){
+    if((original.st_dev != new.st_dev) || (original.st_ino != new.st_ino)){
         fprintf(stderr, "Error: the file read from has been changed from the file about to be written to");
     }
     int accountCounter = isuBank.curAccountCount;
