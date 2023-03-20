@@ -173,6 +173,7 @@ int main(){
             sprintf(accnt.firstName, "%s", firstName);
             sprintf(accnt.lastName, "%s", lastName);
             sprintf(accnt.username, "%s", userName);
+            sprintf(accnt.password, "%s", password);
             accnt.accountID = accountIdVal;
             accnt.balance = balanceFloat;
             isuBank.accounts[isuBank.curAccountCount] = accnt;
