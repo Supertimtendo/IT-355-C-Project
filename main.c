@@ -140,6 +140,15 @@ int main(){
             fprintf(stdout, "First Name: %s\n", firstName);
             fprintf(stdout, "Last Name: %s\n", lastName);
             fprintf(stdout, "Balance: %f\n",balanceFloat);
+            account accnt;
+            allocateStrings(&accnt);
+            sprintf(accnt.firstName, "%s", firstName);
+            sprintf(accnt.lastName, "%s", lastName);
+            sprintf(accnt.username, "%s", userName);
+            accnt.accountID = accountIdVal;
+            accnt.balance = balanceFloat;
+            isuBank.accounts[isuBank.curAccountCount] = accnt;
+            isuBank.curAccountCount++;
         }
 
     }else{
