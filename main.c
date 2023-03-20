@@ -15,6 +15,7 @@
 #include <sys/wait.h>
 #include <sys/stat.h>
 #include <time.h>
+#include <math.h>
 
 /**
  * @brief Exit handler that prints the contents of the program upon exiting
@@ -54,6 +55,28 @@ void printProgram(){
         printf("\nPrinted contents of program. Exiting now.\n");
         return;
     } 
+}
+
+/**
+ * @brief Returns a given integer to the power of a given integer exponent
+ * 
+ * @param base - integer to be worked on
+ * @param exp  - the power the base is set to
+ * @return int - the result of the math function
+ */
+int takeToPower(int base, int exp){
+    int returnVal = 0;
+    /**
+     * @brief Example of rule FLP32-C. Prevent or detect domain and range errors in math functions
+     * 
+     * This if statement checks to make sure that the arguements passed to the function are within the domain
+     * and range for the pow function in the math library.
+     * 
+     */
+    if(base > 0 || (base == 0 && exp > 0) || (base < 0 && sizeof(exp) == sizeof(int))){
+        returnVal = pow(base, exp);
+    }
+    return returnVal;
 }
 /**
  * Main function
