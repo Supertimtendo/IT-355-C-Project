@@ -169,24 +169,37 @@ int main(){
 
     }
 
+    FILE *fp;
+    fp = fopen("bankdata.txt","w");
+
     int accountCounter = isuBank.curAccountCount;
+
     while(accountCounter != 0){
         account acc = isuBank.accounts[accountCounter-1];
-        FILE *fp;
-        fp = fopen("bankdata.txt","w");
-        fwrite(acc.username,1,strlen(acc.username),fp);
-        fwrite(acc.password,1,strlen(acc.password),fp);
-        fwrite(acc.firstName, 1, strlen(acc.firstName), fp);
-        fwrite(acc.lastName, 1, strlen(acc.lastName), fp);
+        char usernameBuffer[100];
+        sprintf(usernameBuffer,"%s\n", acc.username);
+        fwrite(usernameBuffer,1,strlen(usernameBuffer),fp);
+
+        char passwordBuffer[100];
+        sprintf(passwordBuffer,"%s\n", acc.password);
+        fwrite(passwordBuffer,1,strlen(passwordBuffer),fp);
+
+        char firstNameBuffer[100];
+        sprintf(firstNameBuffer,"%s\n", acc.firstName);
+        fwrite(firstNameBuffer, 1, strlen(firstNameBuffer), fp);
+
+        char lastNameBuffer[100];
+        sprintf(lastNameBuffer,"%s\n", lastName);
+        fwrite(lastNameBuffer, 1, strlen(lastNameBuffer), fp);
         char accountIDStr[100];
-        sprintf(accountIDStr, "%d",acc.accountID);
+        sprintf(accountIDStr, "%d\n",acc.accountID);
         fwrite(accountIDStr,strlen(accountIDStr),1,fp);
         char balanceStr[100];
-        sprintf(balanceStr,"%f",acc.balance);
+        sprintf(balanceStr,"%f\n",acc.balance);
         fwrite(balanceStr,strlen(balanceStr),1,fp);
         accountCounter--;
     }
-
+    fclose(fp);
 
     // In the same layer of abstraction (the main method), thus successfully implementing the rule MEM00-C
     freeAccounts(&isuBank);
