@@ -7,7 +7,7 @@ FIO37_39: FIO37_39.c
 	gcc -o FIO37_39 FIO37_39.c
 
 FLP32: FLP32.c
-	gcc -o FLP32 FLP32.c
+	gcc -o FLP32 FLP32.c -lm
 
 MSC32: MSC32.c
 	gcc -o MSC32 MSC32.c
