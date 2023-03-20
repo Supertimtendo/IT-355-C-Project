@@ -28,6 +28,9 @@ void printProgram(){
      * System() is a powerful function that allows for any command to be ran. Instead function in the exec family should be used to prevent attackers from entering malicious commands.
      * 
      * This is a succesfuly implementation because it uses the execv function instead of system.
+     * This is also an example of these array rules with the out of bounds and size exceptions
+     * ARR30-C. Do not form or use out-of-bounds pointers or array subscripts
+     * ARR32-C. Ensure size arguments for variable length arrays are in a valid range 
      */
     char programName[] = "main.c";
     char* args[3] = {"/bin/cat",programName,NULL};
