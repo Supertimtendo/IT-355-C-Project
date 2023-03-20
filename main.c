@@ -59,6 +59,10 @@ void printProgram(){
  * @return Return 0 for exit success
  */
 int main(){
+    //structs for file tracking -- part of FIO01 and FIO05
+    struct stat original;
+    struct stat new;
+
     bank isuBank;
 
     /**
@@ -86,8 +90,6 @@ int main(){
      * The while loop checks each time and make sure that a null value is not pulled form the file.
      */
     if(strcmp(userChoice, "yes") == 0 || strcmp(userChoice, "Yes") == 0){
-        struct stat original;
-        struct stat new;
 
         printf("\nRetrieving data from file...\n");
         FILE *fp;
