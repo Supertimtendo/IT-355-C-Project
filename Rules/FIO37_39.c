@@ -52,11 +52,12 @@ int main(){
 
 
     //reading from the file
-    while(fgets(readBuffer,sizeof(readBuffer),fp)){
-        char *newLinePointer = strchr(readBuffer, '\n');
-        if (newLinePointer){
-            *newLinePointer = '\0';
+    if(fgets(readBuffer,sizeof(readBuffer),fp)){
+        if(strlen(messageBuffer) == 0){
+            fprintf(stderr, "fgets() succeeded, but the string is empty");
         }
+    }else{
+        fprintf(stderr, "fgets() failed to read from file");
     }
     printf("This is the readBuffer: %s",readBuffer);
     
