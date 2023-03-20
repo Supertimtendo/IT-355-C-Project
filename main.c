@@ -189,7 +189,7 @@ int main(){
         fwrite(firstNameBuffer, 1, strlen(firstNameBuffer), fp);
 
         char lastNameBuffer[100];
-        sprintf(lastNameBuffer,"%s\n", lastName);
+        sprintf(lastNameBuffer,"%s\n", acc.lastName);
         fwrite(lastNameBuffer, 1, strlen(lastNameBuffer), fp);
         char accountIDStr[100];
         sprintf(accountIDStr, "%d\n",acc.accountID);
