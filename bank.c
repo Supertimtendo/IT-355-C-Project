@@ -47,12 +47,12 @@ void initializeAccounts(bank *b)
  */
 void freeAccounts(bank *b)
 {
-  //TODO: check for errors related to this free call @Trevor Murphy
   for(int i=0;i<b->curAccountCount;i++){
     account a = b->accounts[i];
     freeStrings(&a);
   }
-  free(b->accounts); 
+  free(b->accounts); // MEM31-C
+  b->accounts = NULL; // MEM01-C
   b->curAccountCount = 0;
   b->maxAccounts = 0;
 }
@@ -128,7 +128,10 @@ void updateAccount(bank *b)
   }
 
   // the memory is free'd in the same module and thus implements the rule.
-  free(userInputChar);
+  free(userInputChar); // MEM31-C
+  userInputChar = NULL; // MEM01-C
+  free(ptr); // MEM31-C
+  ptr = NULL; // MEM01-C
 }
 
 /**
