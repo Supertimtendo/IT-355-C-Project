@@ -24,7 +24,7 @@ int main(){
     //opening the file
     int fd = open(readWriteFile, O_WRONLY);
     if(fd < 0){
-        perror("open() failed");
+        fprintf(stderr, "open() failed");
         exit(1);
     }
 
@@ -34,7 +34,7 @@ int main(){
     write(fd, buffer, sizeof(buffer));
 
     if (fstat(fd, &original) == -1){
-        perror("fstat() failed");
+        fprintf(stderr, "fstat() failed");
         exit(1);
     }
 
@@ -43,18 +43,18 @@ int main(){
     fd = -1;
     fd = open(readWriteFile, O_RDONLY);
     if (fd < 0){
-        perror("open() failed");
+        fprintf(stderr, "open() failed");
         exit(1);
     }
 
     if (fstat(fd, &new) < 0){
-        perror("fstat() failed");
+        fprintf(stderr, "fstat() failed");
         exit(1);
     }
 
     //check to make sure that the two files are the same
     if((original.st_dev != new.st_dev) || (original.st_ino != new.st_ino)){
-        perror("Error: the file was changed");
+        fprintf(stderr, "The file was changed... ERROR")
         exit(1);
     }
 
