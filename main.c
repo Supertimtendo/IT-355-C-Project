@@ -14,6 +14,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
+#include <time.h>
 
 /**
  * @brief Exit handler that prints the contents of the program upon exiting
@@ -62,6 +63,9 @@ int main(){
     //structs for file tracking -- part of FIO01 and FIO05
     struct stat original;
     struct stat new;
+
+    struct timespec ts;
+    srandom(ts.tv_nsec ^ ts.tv_sec);
 
     bank isuBank;
 
@@ -310,6 +314,7 @@ int main(){
         fprintf(stderr,"Error from exit handler: printProgram\n");
     }
 
+    printf("\nGenerated random value: %d", random());
     /**
      * @brief Example of recommendation: FIO23-C. Do not exit with unflushed data on stdout or stderr 
      * Checking if their is any kind of errror at the end of the stout stream and printing an error message if their is.
