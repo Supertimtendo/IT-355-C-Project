@@ -26,10 +26,11 @@ int main(){
     fprintf(stdout, "Enter a message: ");
     if(fgets(messageBuffer, sizeof(messageBuffer),stdin)){
         //checking if the input contain a newline char
-        char *newLinePointer = strchr(messageBuffer, '\n');
-        if (newLinePointer){
-            *newLinePointer = '\0';
+        if(strlen(messageBuffer) == 0){
+            fprintf(stderr, "fgets() succeeded, but the string is empty");
         }
+    }else{
+        fprintf(stderr, "fgets() failed to read user input");
     }
     
     /*
