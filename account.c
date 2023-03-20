@@ -39,10 +39,22 @@ void allocateStrings(account *a){
  * @param a account to free the memory of
 */
 void freeStrings(account *a){
-    free(a->firstName);
-    free(a->lastName);
-    free(a->username);
-    free(a->password);
+    if(a->firstName!=NULL){ // ERR33-C Rule
+        free(a->firstName); // MEM31-C Rule
+        a->firstName = NULL; // MEM01-C - Store a new value in pointers immediately after free()
+    }
+    if(a->lastName!=NULL){ // ERR33-C Rule
+        free(a->lastName); // MEM31-C Rule
+        a->lastName = NULL; // MEM01-C - Store a new value in pointers immediately after free()
+    }
+    if(a->username!=NULL){ // ERR33-C Rule
+        free(a->username); // MEM31-C Rule
+        a->username = NULL; // MEM01-C - Store a new value in pointers immediately after free()
+    }    
+    if(a->password!=NULL){ // ERR33-C Rule
+        free(a->password); // MEM31-C Rule
+        a->password = NULL; // MEM01-C - Store a new value in pointers immediately after free()
+    }
 }
 /**
  * Change an account's name
@@ -75,7 +87,10 @@ void changeName(account *a){
     if(lstNameLength < (MAX_STRING_LENGTH-1)) {
         strncpy(a->lastName, newLastName, lstNameLength);
     }
-    free(newLastName);
+    if(newLastName!=NULL){ // ERR33-C Rule
+        free(newLastName); // MEM31-C Rule
+        newLastName = NULL; // MEM01-C - Store a new value in pointers immediately after free()
+    }    
 }
 /**
  * Change an account's username
@@ -100,7 +115,10 @@ void changeUsername(account *a){
     else{
         fprintf(stderr,"ERROR: New username %s has %ld characters and exceeds the max username lenght of %d characters.\n",newUsername, usrNameLength, MAX_STRING_LENGTH);
     }
-    free(newUsername);
+    if(newUsername!=NULL){ // ERR33-C Rule
+        free(newUsername); // MEM31-C Rule
+        newUsername = NULL; // MEM01-C - Store a new value in pointers immediately after free()
+    }
 }
 
 /**
@@ -126,7 +144,10 @@ void changePassword(account *a){
     else{
         fprintf(stderr,"ERROR: New password %s has %ld characters and exceeds the max username lenght of %d characters.\n",newPassword, passLength, MAX_STRING_LENGTH);
     }
-    free(newPassword);
+    if(newPassword!=NULL){ // ERR33-C Rule
+        free(newPassword); // MEM31-C Rule
+        newPassword = NULL; // MEM01-C - Store a new value in pointers immediately after free()
+    }
 }
 
 
