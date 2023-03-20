@@ -212,6 +212,13 @@ int main(){
     }
 
     FILE *fp;
+    /**
+     * @brief Example of rule FIO39-C. Do not alternately input and output form a stream without an intervening flush or positioning call.
+     * 
+     * By reopening the file, the input and output from the stream is not immediately alternated. The risk of undefined results is 
+     * eliminated because a new file stream is created. It is effectively automatically repositioning at the top
+     * of the file.
+     */
     fp = fopen("bankdata.txt","w");
     int fd = fileno(fp);
 
