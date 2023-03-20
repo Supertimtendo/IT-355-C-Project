@@ -35,6 +35,8 @@ void initializeAccounts(bank *b)
    * Sufficient memory must be allocated for an object in order to avoid buffer overflows.
    * 
    */
+  b->curAccountCount=0;
+  b->maxAccounts=MAX_NUM_ACCOUNTS;
   size_t accountSize = sizeof(account);                    // Size of an account
   size_t allAccountsSize = accountSize * MAX_NUM_ACCOUNTS; // Total size in memory to store all the accounts
 
