@@ -1,6 +1,6 @@
 /**
  * @file account.c
- * @author Tim Buranicz, Tom Freier
+ * @author Tim Buranicz, Tom Freier, Lucas Beebe
  * @version 1.0
  * Implementation of account
  */
@@ -65,6 +65,14 @@ void changeName(account *a){
         //STR03-C: Since we are specifying the size and already checked the SRC size, the string will not be truncated
         //STR07-C: We are using strcpy_s to make extra sure to avoid overflows
         strncpy(a->firstName, newFirstName, fstNameLength);
+    }else{
+        /**
+         * @brief Example of rule FIO30-C. Exclude user input from format strings.
+         * 
+         * The user input string is passed as an argument to fprintf so it will not be executed and the potential 
+         * vulnerability of malicious input is avoided altogether
+         */
+        fprintf(stderr,"ERROR: New username %s has %ld characters and exceeds the max username length of %d characters.\n",newFirstName, fstNameLength, MAX_STRING_LENGTH);
     }
     free(newFirstName);
     //Last name change:
@@ -74,6 +82,8 @@ void changeName(account *a){
     size_t lstNameLength = strlen(newLastName);
     if(lstNameLength < (MAX_STRING_LENGTH-1)) {
         strncpy(a->lastName, newLastName, lstNameLength);
+    }else{
+        fprintf(stderr,"ERROR: New username %s has %ld characters and exceeds the max username length of %d characters.\n",newLastName, lstNameLength, MAX_STRING_LENGTH);
     }
     free(newLastName);
 }
@@ -98,7 +108,7 @@ void changeUsername(account *a){
         strncpy(a->username,newUsername,size);
     }
     else{
-        fprintf(stderr,"ERROR: New username %s has %ld characters and exceeds the max username lenght of %d characters.\n",newUsername, usrNameLength, MAX_STRING_LENGTH);
+        fprintf(stderr,"ERROR: New username %s has %ld characters and exceeds the max username length of %d characters.\n",newUsername, usrNameLength, MAX_STRING_LENGTH);
     }
     free(newUsername);
 }
