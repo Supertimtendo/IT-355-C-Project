@@ -39,22 +39,10 @@ void allocateStrings(account *a){
  * @param a account to free the memory of
 */
 void freeStrings(account *a){
-    if(a->firstName!=NULL){
-        free(a->firstName);
-        a->firstName=NULL;
-    }
-    if(a->lastName!=NULL){
-        free(a->lastName);
-        a->lastName=NULL;
-    }
-    if(a->username!=NULL){
-        free(a->username);
-        a->username=NULL;        
-    }
-    if(a->password!=NULL){
-        free(a->password);
-        a->password=NULL;        
-    }
+    free(a->firstName);
+    free(a->lastName);
+    free(a->username);
+    free(a->password);
 }
 /**
  * Change an account's name
@@ -183,18 +171,13 @@ void addFunds(account *a, float amount){
     /** @brief Example of rule: EXP30-C. Do not depend on the order of evaluation for the side effects
      *  This does not depend on the order of opeartion so no side effects should affect the code
     */
-        a->balance = a->balance + amount;
+        a->balance += amount;
+        printf("New balance:%f\n",a->balance);
         if(fetestexcept(FE_OVERFLOW)){
-            fprintf(stderr,"Error float overflow");
-        }
-        else if(fetestexcept(FE_INEXACT)){
-            fprintf(stderr,"Error float inexact");
+            fprintf(stderr,"Error float overflow\n");
         }
         else if(fetestexcept(FE_UNDERFLOW)){
-            fprintf(stderr,"Error float underflow");
-        }
-        else if(fetestexcept(FE_ALL_EXCEPT)){
-            fprintf(stderr,"Error other exception");
+            fprintf(stderr,"Error float underflow\n");
         }
         feclearexcept(FE_ALL_EXCEPT);
     /** @brief Example of recommendation: LP03-C. Detect and handle floating-point errors

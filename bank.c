@@ -52,8 +52,7 @@ void freeAccounts(bank *b)
     account a = b->accounts[i];
     freeStrings(&a);
   }
-  free(b->accounts); // MEM31-C
-  b->accounts = NULL; // MEM01-C
+  free(b->accounts); 
   b->curAccountCount = 0;
   b->maxAccounts = 0;
 }
@@ -115,7 +114,6 @@ void updateAccount(bank *b)
   else
   { // valid input from user
     int accID = (int) userInputNumber;
-    printf("%d\n",accID);
     account foundAcc = findAccount(b, accID);
     if (foundAcc.accountID == -1)
     { // no account was found
@@ -130,10 +128,7 @@ void updateAccount(bank *b)
   }
 
   // the memory is free'd in the same module and thus implements the rule.
-  free(userInputChar); // MEM31-C
-  userInputChar = NULL; // MEM01-C
-  free(ptr); // MEM31-C
-  ptr = NULL; // MEM01-C
+  free(userInputChar);
 }
 
 /**
@@ -225,16 +220,16 @@ void deposit(bank *b)
     else
     { 
       //printf("Current Balance:%f \n:",checkBalance(&foundAcc));
-      printf("Enter amount to deposit into account:\n");
+      printf("Enter a whole number amount to deposit into account:\n");
       scanf("%s", userInputChar);
       const long userInputNumber2 = strtol(userInputChar, &ptr,10);
        /**
      * @brief Example of rule: EXP45-C. Do not perform assignments in section statements
      * The section statement does not perfrom aassignment
      */
-      if (ptr == userInputChar||'\0' != *ptr|| LONG_MIN == userInputNumber2||LONG_MAX == userInputNumber2||ERANGE == errno||userInputNumber2 > FLT_MAX||userInputNumber2 < FLT_MIN)
+      if (ptr == userInputChar|| LONG_MIN == userInputNumber2||LONG_MAX == userInputNumber2||ERANGE == errno||userInputNumber2 > FLT_MAX||userInputNumber2 < FLT_MIN)
       { // invalid input from user
-      fprintf(stderr, "ERROR did not enter integer.\n");
+        fprintf(stderr, "ERROR did not enter integer.\n");
       }
       else
       {
@@ -244,7 +239,6 @@ void deposit(bank *b)
 
     }
   }
-
   
 }
 void withdrawal(bank *b)
@@ -305,5 +299,5 @@ void withdrawal(bank *b)
       }
     }
   }
-
+  free(userInputChar);
 }
