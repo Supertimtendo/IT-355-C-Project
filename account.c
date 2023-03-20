@@ -39,10 +39,22 @@ void allocateStrings(account *a){
  * @param a account to free the memory of
 */
 void freeStrings(account *a){
-    free(a->firstName);
-    free(a->lastName);
-    free(a->username);
-    free(a->password);
+    if(a->firstName!=NULL){
+        free(a->firstName);
+        a->firstName=NULL;
+    }
+    if(a->lastName!=NULL){
+        free(a->lastName);
+        a->lastName=NULL;
+    }
+    if(a->username!=NULL){
+        free(a->username);
+        a->username=NULL;        
+    }
+    if(a->password!=NULL){
+        free(a->password);
+        a->password=NULL;        
+    }
 }
 /**
  * Change an account's name
