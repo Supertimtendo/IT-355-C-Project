@@ -314,7 +314,7 @@ int main(){
         fprintf(stderr,"Error from exit handler: printProgram\n");
     }
 
-    printf("\nGenerated random value: %d", random());
+    printf("\nGenerated random value: %ld", random());
     /**
      * @brief Example of recommendation: FIO23-C. Do not exit with unflushed data on stdout or stderr 
      * Checking if their is any kind of errror at the end of the stout stream and printing an error message if their is.
