@@ -1,6 +1,6 @@
 /**
  * @file bank.c
- * @author Tom Frieer, Trevor Murphy
+ * @author Tom Frieer
  * @version 1.0
  * Implementation of bank
  */
@@ -31,12 +31,10 @@ void initializeAccounts(bank *b)
    * Thus, the size_t is the correct type for representing the size of the object as it is guaranteed to be large enough to represent the size of an object in memory.
    *
    * MEM35-C - Allocate sufficient memory for an object
-   * 
-   * Sufficient memory must be allocated for an object in order to avoid buffer overflows.
-   * 
+   * TODO: @Trevor Murphy please add some documentation describing why this follows your rule
    */
-  b->curAccountCount=0;
-  b->maxAccounts=MAX_NUM_ACCOUNTS;
+  b->curAccountCount = 0;
+  b->maxAccounts = MAX_NUM_ACCOUNTS;
   size_t accountSize = sizeof(account);                    // Size of an account
   size_t allAccountsSize = accountSize * MAX_NUM_ACCOUNTS; // Total size in memory to store all the accounts
 
@@ -49,12 +47,13 @@ void initializeAccounts(bank *b)
  */
 void freeAccounts(bank *b)
 {
-
-  if(b!=NULL){ // ERR33-C Rule
-    free(b->accounts); // MEM31-C Rule
-    b->accounts = NULL; // MEM01-C - Store a new value in pointers immediately after free()
+  //TODO: check for errors related to this free call @Trevor Murphy
+  for(int i=0;i<b->curAccountCount;i++){
+    account a = b->accounts[i];
+    freeStrings(&a);
   }
-
+  free(b->accounts); // MEM31-C
+  b->accounts = NULL; // MEM01-C
   b->curAccountCount = 0;
   b->maxAccounts = 0;
 }
@@ -72,9 +71,13 @@ void addAccount(bank *b)
      */
   if ((b->curAccountCount) < b->maxAccounts)
   {
-
-    b->accounts[b->curAccountCount] = createAccount();
-    b->curAccountCount = b->curAccountCount + 1;
+    int curCount = b->curAccountCount; 
+    account a = createAccount();
+    a.accountID = curCount;
+    b->accounts[curCount] = a;
+    b->accounts[curCount].accountID = curCount; 
+    b->curAccountCount = curCount + 1;
+    printf("AccountID:%d\n",a.accountID);
   }
   else{
     fprintf(stderr,"ERROR: Maximum account limit of %d was reached for the bank. Account could NOT be added.\n", b->maxAccounts);
@@ -91,7 +94,6 @@ void updateAccount(bank *b)
   printf("Input Account ID\n:");
   errno = 0;
   char *ptr;
-  int accID;
   /**
   * @brief Example of recommendation: MEM00-C. Allocate and free memory in the same module, at the same level of abstraction
   */ 
@@ -112,7 +114,8 @@ void updateAccount(bank *b)
   }
   else
   { // valid input from user
-    accID = (int)userInputNumber;
+    int accID = (int) userInputNumber;
+    printf("%d\n",accID);
     account foundAcc = findAccount(b, accID);
     if (foundAcc.accountID == -1)
     { // no account was found
@@ -127,20 +130,10 @@ void updateAccount(bank *b)
   }
 
   // the memory is free'd in the same module and thus implements the rule.
-  // Recommendation : MEM01-C 
-  // Rules : MEM31-C + MEM34-C + ERR33-C
-  if(ptr != NULL){
-    free(ptr); 
-    ptr = NULL; 
-  }
-  if(userInputChar != NULL){
-    free(userInputChar);
-    userInputChar = NULL;
-  }
-
-
-
-
+  free(userInputChar); // MEM31-C
+  userInputChar = NULL; // MEM01-C
+  free(ptr); // MEM31-C
+  ptr = NULL; // MEM01-C
 }
 
 /**
@@ -206,7 +199,7 @@ void deposit(bank *b)
   /**
   * @brief Example of recommendation: MEM00-C. Allocate and free memory in the same module, at the same level of abstraction
   */ 
-  char *userInputChar = (char *) malloc(sizeof(char) * 100); // MEM35-C - Allocate sufficient memory for an object
+  char *userInputChar = (char *) malloc(sizeof(char) * 100);
   
   /**
    * @brief Example of rule: ERR34-C. Detect errors when converting a string to a number
@@ -251,16 +244,8 @@ void deposit(bank *b)
 
     }
   }
-  // Recommendation : MEM01-C 
-  // Rules : MEM31-C + MEM34-C + ERR33-C
-  if(ptr != NULL){
-    free(ptr); 
-    ptr = NULL; 
-  }
-  if(userInputChar != NULL){
-    free(userInputChar);
-    userInputChar = NULL;
-  }
+
+  
 }
 void withdrawal(bank *b)
 {
@@ -272,7 +257,7 @@ void withdrawal(bank *b)
   /**
   * @brief Example of recommendation: MEM00-C. Allocate and free memory in the same module, at the same level of abstraction
   */ 
-  char *userInputChar = (char *) malloc(sizeof(char) * 100); // MEM35-C - Allocate sufficient memory for an object
+  char *userInputChar = (char *) malloc(sizeof(char) * 100);
   
   /**
    * @brief Example of rule: ERR34-C. Detect errors when converting a string to a number
@@ -320,14 +305,5 @@ void withdrawal(bank *b)
       }
     }
   }
-  // Recommendation : MEM01-C 
-  // Rules : MEM31-C + MEM34-C + ERR33-C
-  if(ptr != NULL){
-    free(ptr); 
-    ptr = NULL; 
-  }
-  if(userInputChar != NULL){
-    free(userInputChar);
-    userInputChar = NULL;
-  }
+
 }

@@ -39,21 +39,21 @@ void allocateStrings(account *a){
  * @param a account to free the memory of
 */
 void freeStrings(account *a){
-    if(a->firstName!=NULL){ // ERR33-C Rule
-        free(a->firstName); // MEM31-C Rule
-        a->firstName = NULL; // MEM01-C - Store a new value in pointers immediately after free()
+    if(a->firstName!=NULL){
+        free(a->firstName);
+        a->firstName=NULL;
     }
-    if(a->lastName!=NULL){ // ERR33-C Rule
-        free(a->lastName); // MEM31-C Rule
-        a->lastName = NULL; // MEM01-C - Store a new value in pointers immediately after free()
+    if(a->lastName!=NULL){
+        free(a->lastName);
+        a->lastName=NULL;
     }
-    if(a->username!=NULL){ // ERR33-C Rule
-        free(a->username); // MEM31-C Rule
-        a->username = NULL; // MEM01-C - Store a new value in pointers immediately after free()
-    }    
-    if(a->password!=NULL){ // ERR33-C Rule
-        free(a->password); // MEM31-C Rule
-        a->password = NULL; // MEM01-C - Store a new value in pointers immediately after free()
+    if(a->username!=NULL){
+        free(a->username);
+        a->username=NULL;        
+    }
+    if(a->password!=NULL){
+        free(a->password);
+        a->password=NULL;        
     }
 }
 /**
@@ -87,10 +87,7 @@ void changeName(account *a){
     if(lstNameLength < (MAX_STRING_LENGTH-1)) {
         strncpy(a->lastName, newLastName, lstNameLength);
     }
-    if(newLastName!=NULL){ // ERR33-C Rule
-        free(newLastName); // MEM31-C Rule
-        newLastName = NULL; // MEM01-C - Store a new value in pointers immediately after free()
-    }    
+    free(newLastName);
 }
 /**
  * Change an account's username
@@ -115,10 +112,7 @@ void changeUsername(account *a){
     else{
         fprintf(stderr,"ERROR: New username %s has %ld characters and exceeds the max username lenght of %d characters.\n",newUsername, usrNameLength, MAX_STRING_LENGTH);
     }
-    if(newUsername!=NULL){ // ERR33-C Rule
-        free(newUsername); // MEM31-C Rule
-        newUsername = NULL; // MEM01-C - Store a new value in pointers immediately after free()
-    }
+    free(newUsername);
 }
 
 /**
@@ -144,10 +138,7 @@ void changePassword(account *a){
     else{
         fprintf(stderr,"ERROR: New password %s has %ld characters and exceeds the max username lenght of %d characters.\n",newPassword, passLength, MAX_STRING_LENGTH);
     }
-    if(newPassword!=NULL){ // ERR33-C Rule
-        free(newPassword); // MEM31-C Rule
-        newPassword = NULL; // MEM01-C - Store a new value in pointers immediately after free()
-    }
+    free(newPassword);
 }
 
 
@@ -191,9 +182,6 @@ void addFunds(account *a, float amount){
     else{
     /** @brief Example of rule: EXP30-C. Do not depend on the order of evaluation for the side effects
      *  This does not depend on the order of opeartion so no side effects should affect the code
-    */
-    /** @brief Example of recomadarion : FLP01-C. Take care in rearranging floating-point expressions
-     *  Floating point follows the order of operations.
     */
         a->balance = a->balance + amount;
         if(fetestexcept(FE_OVERFLOW)){
