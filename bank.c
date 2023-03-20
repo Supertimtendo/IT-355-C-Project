@@ -106,6 +106,9 @@ void updateAccount(bank *b)
    * After reading a char string from the user and coverting it to an int. It must be checked to make sure that the char was converted to an int correctly. 
    * The if statment will check that the int is a non decimal and that there are no letters in it. 
    * 
+   * This also properly compares char in the same array object showing an example of 
+   * ARR37-C. Do not add or subtract an integer to a pointer to a non-array object
+   * ARR39-C. Do not add or subtract a scaled integer to a pointer 
    */
   scanf("%s", userInputChar);
   const long userInputNumber = strtol(userInputChar, &ptr,10);
