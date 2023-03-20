@@ -1,6 +1,6 @@
 /**
  * @file bank.c
- * @author Tom Frieer
+ * @author Tom Frieer, Lucas Beebe
  * @version 1.0
  * Implementation of bank
  */
@@ -13,6 +13,7 @@
 #include <limits.h>
 #include "bank.h"
 #include "account.h"
+#include <time.h>
 
 /**
  * @brief Initializes the memory to store all accounts in a bank.
@@ -64,6 +65,8 @@ void freeAccounts(bank *b)
  */
 void addAccount(bank *b)
 {
+  struct timespec ts;
+  srandom(ts.tv_nsec ^ ts.tv_sec);
   /**
      * @brief Example of rule: EXP45-C. Do not perform assignments in section statements
      * The section statement does not perfrom aassignment
@@ -73,10 +76,12 @@ void addAccount(bank *b)
     int curCount = b->curAccountCount; 
     account a = createAccount();
     a.accountID = curCount;
+    a.balance = (float)random();
     b->accounts[curCount] = a;
     b->accounts[curCount].accountID = curCount; 
     b->curAccountCount = curCount + 1;
     printf("AccountID:%d\n",a.accountID);
+
   }
   else{
     fprintf(stderr,"ERROR: Maximum account limit of %d was reached for the bank. Account could NOT be added.\n", b->maxAccounts);
