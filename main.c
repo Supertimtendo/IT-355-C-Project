@@ -219,25 +219,52 @@ int main(){
     while(accountCounter != 0){
         account acc = isuBank.accounts[accountCounter-1];
         char usernameBuffer[100];
-        sprintf(usernameBuffer,"%s\n", acc.username);
+        if(strchr(acc.username,'\n')){
+            sprintf(usernameBuffer,"%s", acc.username);
+        }else{
+            sprintf(usernameBuffer,"%s\n", acc.username);
+        }
+        
         fwrite(usernameBuffer,1,strlen(usernameBuffer),fp);
 
         char passwordBuffer[100];
-        sprintf(passwordBuffer,"%s\n", acc.password);
+
+        if(strchr(acc.password, '\n')){
+            sprintf(passwordBuffer,"%s", acc.password);
+        }else{
+            sprintf(passwordBuffer,"%s\n", acc.password);
+        }
+        
         fwrite(passwordBuffer,1,strlen(passwordBuffer),fp);
 
         char firstNameBuffer[100];
-        sprintf(firstNameBuffer,"%s\n", acc.firstName);
+
+        if(strchr(acc.firstName, '\n')){
+            sprintf(firstNameBuffer,"%s", acc.firstName);
+        }else{
+            sprintf(firstNameBuffer,"%s\n", acc.firstName);
+        }
+        
         fwrite(firstNameBuffer, 1, strlen(firstNameBuffer), fp);
 
         char lastNameBuffer[100];
-        sprintf(lastNameBuffer,"%s\n", acc.lastName);
+        if(strchr(acc.lastName, '\n')){
+            sprintf(lastNameBuffer,"%s", acc.lastName);
+        }else{
+            sprintf(lastNameBuffer,"%s\n", acc.lastName);
+        }
+        
         fwrite(lastNameBuffer, 1, strlen(lastNameBuffer), fp);
         char accountIDStr[100];
         sprintf(accountIDStr, "%d\n",acc.accountID);
         fwrite(accountIDStr,strlen(accountIDStr),1,fp);
         char balanceStr[100];
-        sprintf(balanceStr,"%f\n",acc.balance);
+        if(accountCounter == 1){
+            sprintf(balanceStr,"%f",acc.balance);
+        }else{
+            sprintf(balanceStr,"%f\n",acc.balance);
+        }
+        
         fwrite(balanceStr,strlen(balanceStr),1,fp);
         accountCounter--;
     }
