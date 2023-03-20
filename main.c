@@ -179,7 +179,7 @@ int main(){
             isuBank.accounts[isuBank.curAccountCount] = accnt;
             isuBank.curAccountCount++;
         }
-        if(fstat(fd, &new) < 0){
+        if(fstat(fd, &original) < 0){
             fprintf(stderr, "fstat() failed");
         }
         fclose(fp);
@@ -213,12 +213,36 @@ int main(){
 
     FILE *fp;
     fp = fopen("bankdata.txt","w");
+    int fd = fileno(fp);
 
+    /**
+     * @brief Example of recommendations FIO01-C and FIO05. FIO01-C is "Be careful using 
+     * functions that use file names for identification". FIO05-C is "Identify files using multiple file attributes".
+     * 
+     * Both of these recommendations are followed here because the file being written to is being verified as the
+     * same file that was read from through it's file number and by using sys/stat.h. In order to identify the file using 
+     * multiple attributes, the file number is used to identify it as well as the file name.
+     */
+    if(fstat(fd, &new) < 0){
+        fprintf(stderr, "fstat() failed");
+    }
+
+    if(original.st_dev != new.st_dev) || (original.st_ino != new.st_ino){
+        fprintf(stderr, "Error: the file read from has been changed from the file about to be written to");
+    }
     int accountCounter = isuBank.curAccountCount;
 
     while(accountCounter != 0){
         account acc = isuBank.accounts[accountCounter-1];
         char usernameBuffer[100];
+        /**
+             * @brief Example of rule FIO37-C. Do not assume that fgets() or fgetws() returns a nonempty string when successful
+             * 
+             * In the if statement fgets() is run and it is checked whether or not it failed, but
+             * there is another check to make sure that even if fgets() succeeds that the string is not empty.
+             * If the string is empty, an error message is still shown.
+             * 
+             */
         if(strchr(acc.username,'\n')){
             sprintf(usernameBuffer,"%s", acc.username);
         }else{
