@@ -64,6 +64,12 @@ int main(){
     struct stat original;
     struct stat new;
 
+    /**
+     * @brief Example of rule MSC32-C. Properly seed pseudorandom number generators
+     * 
+     * The timespec struct from the time.h library is used to set the seed so that it is different 
+     * each time the program is run.
+     */
     struct timespec ts;
     srandom(ts.tv_nsec ^ ts.tv_sec);
 
@@ -314,6 +320,7 @@ int main(){
         fprintf(stderr,"Error from exit handler: printProgram\n");
     }
 
+    
     printf("\nGenerated random value: %ld", random());
     /**
      * @brief Example of recommendation: FIO23-C. Do not exit with unflushed data on stdout or stderr 
