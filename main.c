@@ -78,6 +78,10 @@ int main(){
             exit(1);
         }
     }
+    /**
+     * @brief Example of recommendation: EXP34-C. Do not dereference null pointers
+     * The while loop checks each time and make sure that a null value is not pulled form the file.
+     */
     if(strcmp(userChoice, "yes") == 0 || strcmp(userChoice, "Yes") == 0){
         printf("\nRetrieving data from file...\n");
         retrieveFromFile = true;
@@ -141,6 +145,10 @@ int main(){
     }else{
         printf("\nNot retrieving data from file\n");
     }
+     /**
+     * @brief Example of recommendation: API01-C. Avoid laying out strings in memory directly before sensitive data
+     * We get the informtion form the file before we get any type of info from the user making sure that the user input cannot overwrite the data if a buffer overflow happens
+     */
     // Do stuff with the bank, get user input etc.
     bool continueRunning = true;
     int userInput;
