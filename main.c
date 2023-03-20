@@ -71,14 +71,10 @@ int main(){
     initializeAccounts(&isuBank);
 
     char userChoice[4] = "\0";
-    bool retrieveFromFile = false;
     fprintf(stdout, "Would you like to retrieve previous bank account information? (yes/no): ");
     while(strcmp(userChoice, "yes") != 0 && strcmp(userChoice, "Yes") != 0 && strcmp(userChoice, "no") != 0 && strcmp(userChoice, "No") != 0){
         if(fgets(userChoice, sizeof(userChoice), stdin)){
-            char *newLinePointer = strchr(userChoice, '\n');
-            if(newLinePointer){
-                *newLinePointer = '\0';
-            }
+            
         }else{
             fprintf(stderr, "Error: fgets() failure during user input retrieval");
             exit(1);
@@ -90,7 +86,6 @@ int main(){
      */
     if(strcmp(userChoice, "yes") == 0 || strcmp(userChoice, "Yes") == 0){
         printf("\nRetrieving data from file...\n");
-        retrieveFromFile = true;
         FILE *fp;
         fp = fopen("bankdata.txt", "r");
         int accountCounter = 0;
@@ -103,8 +98,18 @@ int main(){
         char balance[100];
         float balanceFloat;
         while(!feof(fp)){
+            /**
+             * @brief Example of rule FIO37-C. Do not assume that fgets() or fgetws() returns a nonempty string when successful
+             * 
+             * In the if statement fgets() is run and it is checked whether or not it failed, but
+             * there is another check to make sure that even if fgets() succeeds that the string is not empty.
+             * If the string is empty, an error message is still shown.
+             * 
+             */
             if(fgets(userName, sizeof(userName),fp)){
-                
+                if(strlen(userName) == 0){
+                    fprintf(stderr, "fgets() succeeded, but it is an empty string");
+                }
             }else{
                 fprintf(stderr, "There was an error reading file with fgets()");
                 exit(1);
