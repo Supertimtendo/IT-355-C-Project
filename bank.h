@@ -29,13 +29,13 @@ void withdrawal(bank *b);
 /*
 * @brief example of PRE01-C. Use parentheses within macros around parameter names
 * this macro uses the correct parenthesis around parameters, no practical use in this specific program but the rec example is here
-*/
+*
 #define SQUAREMACRO (I) ((I)*(I))
 int squareMacNum = SQUAREMACRO(2);
 /*
 * @brief example of PRE02-C. Macro replacement lists should be parenthesized
 * this macro uses paranthesis around its lists properly, no practical use in this specific program but the rec example is here
-*/
+*
 #define SQUAREMACRO (I) ((I)*(I))
 int replList = 5
 int squareMacNum2 = SQUAREMACRO(repList);
@@ -49,9 +49,9 @@ static inline int inlineFunc(){
 /*
 * @brief example of  PRE13-C. Use the Standard predefined macros to test for versions and features
 * this macro is from the standard testing list, no practical use in this specific program but the rec example is here
-*/static inline void inlineFunc2(){
+*static inline void inlineFunc2(){
     printf("compilation time is: ", __TIME__);
     return;
 }
-
+*/
 #endif //BANK_H
