@@ -13,6 +13,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
 
 /**
  * @brief Exit handler that prints the contents of the program upon exiting
@@ -85,9 +86,13 @@ int main(){
      * The while loop checks each time and make sure that a null value is not pulled form the file.
      */
     if(strcmp(userChoice, "yes") == 0 || strcmp(userChoice, "Yes") == 0){
+        struct stat original;
+        struct stat new;
+
         printf("\nRetrieving data from file...\n");
         FILE *fp;
         fp = fopen("bankdata.txt", "r");
+        int fd = fileno(fp);
         int accountCounter = 0;
         char accountId[100];
         int accountIdVal;
@@ -116,30 +121,42 @@ int main(){
             }
             
             if(fgets(password, sizeof(password), fp)){
-                
+                if(strlen(password) == 0){
+                    fprintf(stderr, "fgets() succeeded, but it is an empty string");
+                }
             }else{
                 fprintf(stderr, "There was an error reading file with fgets()");
             }
             
             if(fgets(firstName, sizeof(firstName), fp)){
-                
+                if(strlen(firstName) == 0){
+                    fprintf(stderr, "fgets() succeeded, but it is an empty string");
+                }
             }else{
                 fprintf(stderr,"There was an error reading file with fgets()");
             }
             
             if(fgets(lastName, sizeof(lastName), fp)){
-                
+                if(strlen(lastName) == 0){
+                    fprintf(stderr, "fgets() succeeded, but it is an empty string");
+                }
             }else{
                 fprintf(stderr, "There was an error reading file with fgets()");
             }
             
             if(fgets(accountId, sizeof(accountId), fp)){
+                if(strlen(accountId) == 0){
+                    fprintf(stderr, "fgets() succeeded, but it is an empty string");
+                }
                 accountIdVal = atoi(accountId);
             }else{
                 fprintf(stderr, "There was an error reading file with fgets()");
             }
             
             if(fgets(balance, sizeof(balance), fp)){
+                if(strlen(balance) == 0){
+                    fprintf(stderr, "fgets() succeeded, but it is an empty string");
+                }
                 balanceFloat = atof(balance);
             }else{
                 fprintf(stderr, "There was an error reading file with fgets()");
@@ -161,6 +178,10 @@ int main(){
             isuBank.accounts[isuBank.curAccountCount] = accnt;
             isuBank.curAccountCount++;
         }
+        if(fstat(fd, &new) < 0){
+            fprintf(stderr, "fstat() failed");
+        }
+        fclose(fp);
 
     }else{
         printf("\nNot retrieving data from file\n");
