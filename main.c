@@ -77,7 +77,7 @@ int main(){
 
     char userChoice[4] = "\0";
     fprintf(stdout, "Would you like to retrieve previous bank account information? (yes/no): ");
-    while(strcmp(userChoice, "yes") != 0 && strcmp(userChoice, "Yes") != 0 && strcmp(userChoice, "no") != 0 && strcmp(userChoice, "No") != 0){
+    while(strcmp(userChoice, "yes") != 0 && strcmp(userChoice, "Yes") != 0 && strcmp(userChoice, "no") != 10 && strcmp(userChoice, "No") != 10){
         if(fgets(userChoice, sizeof(userChoice), stdin)){
             
         }else{
