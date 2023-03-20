@@ -61,8 +61,6 @@ void freeStrings(account *a){
  * @param a Changes name of account
  */
 void changeName(account *a){
-    //TODO: User input for new names
-
     //TODO: Add error message if new string is too long
     //First name change:
     //STR31-C: The new char array is null-terminated since no size is given, so the compiler automatically allocates the correct amount of memory
@@ -75,7 +73,7 @@ void changeName(account *a){
         //STR32-C: Since the above char array is properly null-terminated, we do not have to worry about any overflows here
         //STR38-C: Since all our char arrays are narrow, there is no chance of an error when using functions that expect narrow strings
         //STR03-C: Since we are specifying the size and already checked the SRC size, the string will not be truncated
-        //STR07-C: We are using strcpy_s to make extra sure to avoid overflows
+        //STR07-C: We are using strncpy to make extra sure to avoid overflows
         strncpy(a->firstName, newFirstName, fstNameLength);
     }else{
         /**
@@ -104,7 +102,6 @@ void changeName(account *a){
  * @param a Changes username of account
  */
 void changeUsername(account *a){
-    //TODO: User input for new username
     char * newUsername = (char *) malloc(sizeof(char)*MAX_STRING_LENGTH);
     printf("Enter New Username:\n");
     scanf("%s", newUsername);

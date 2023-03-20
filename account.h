@@ -13,7 +13,7 @@ typedef struct{
     float balance;
     int accountID;
 /**
- * STR-30C: Keeping this rule in mind when using these char arrays is important. Since they have no values initialized, only a size,
+ * STR-30C: Keeping this rule in mind when using these char arrays is important. Since they have no values initialized,
  * it is important to make sure not to modify the strings, but instead only copy them. Additionally, when checking strings, make sure
  * to account for the null termination symbol when copying
  */
