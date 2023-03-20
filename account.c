@@ -171,6 +171,9 @@ void addFunds(account *a, float amount){
     /** @brief Example of rule: EXP30-C. Do not depend on the order of evaluation for the side effects
      *  This does not depend on the order of opeartion so no side effects should affect the code
     */
+    /** @brief Example of recomadarion : FLP01-C. Take care in rearranging floating-point expressions
+     *  Floating point follows the order of operations.
+    */
         a->balance = a->balance + amount;
         if(fetestexcept(FE_OVERFLOW)){
             fprintf(stderr,"Error float overflow");
