@@ -94,6 +94,11 @@ int main(){
      * each time the program is run.
      */
     struct timespec ts;
+    int tsReturnVal = timespec_get(&ts, TIME_UTC);
+    if(tsReturnVal == 0){
+        fprintf(stderr, "Error: timespec_get() failed");
+        exit(1);
+    }
     srandom(ts.tv_nsec ^ ts.tv_sec);
 
     bank isuBank;
