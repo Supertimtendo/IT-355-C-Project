@@ -54,7 +54,7 @@ int main(){
 
     //check to make sure that the two files are the same
     if((original.st_dev != new.st_dev) || (original.st_ino != new.st_ino)){
-        fprintf(stderr, "The file was changed... ERROR")
+        fprintf(stderr, "The file was changed... ERROR");
         exit(1);
     }
 
