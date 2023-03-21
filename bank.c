@@ -51,8 +51,10 @@ void freeAccounts(bank *b)
     account a = b->accounts[i];
     freeStrings(&a);
   }
-  free(b->accounts); // MEM31-C
-  b->accounts = NULL; // MEM01-C
+  if(b->accounts != NULL){ // error checking
+    free(b->accounts); // MEM31-C
+    b->accounts = NULL; // MEM01-C
+  }
   b->curAccountCount = 0;
   b->maxAccounts = 0;
 }
@@ -133,10 +135,10 @@ void updateAccount(bank *b)
   }
 
   // the memory is free'd in the same module and thus implements the rule.
-  free(userInputChar); // MEM31-C
-  userInputChar = NULL; // MEM01-C
-  free(ptr); // MEM31-C
-  ptr = NULL; // MEM01-C
+  if(userInputChar != NULL){ // error checking
+    free(userInputChar); // MEM31-C
+    userInputChar = NULL; // MEM01-C
+  }
 }
 
 /**
@@ -246,6 +248,10 @@ void deposit(bank *b)
       }
 
     }
+    if(userInputChar != NULL){
+      free(userInputChar);
+      userInputChar = NULL;
+    }
   }
   
 }
@@ -307,5 +313,8 @@ void withdrawal(bank *b)
       }
     }
   }
-  free(userInputChar);
+  if(userInputChar != NULL){
+    free(userInputChar);
+    userInputChar = NULL;
+  }
 }
