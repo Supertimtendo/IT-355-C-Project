@@ -39,21 +39,21 @@ void allocateStrings(account *a){
  * @param a account to free the memory of
 */
 void freeStrings(account *a){
-    if(a->firstName!=NULL){
-        free(a->firstName);
-        a->firstName=NULL;
+    if(a->firstName!=NULL){ //error checking
+        free(a->firstName); // MEM31-C
+        a->firstName=NULL; // MEM01-C
     }
-    if(a->lastName!=NULL){
-        free(a->lastName);
-        a->lastName=NULL;
+    if(a->lastName!=NULL){ 
+        free(a->lastName); //MEM31
+        a->lastName=NULL; //MEM01
     }
     if(a->username!=NULL){
-        free(a->username);
-        a->username=NULL;        
+        free(a->username); //MEM31
+        a->username=NULL; //MEM01
     }
     if(a->password!=NULL){
-        free(a->password);
-        a->password=NULL;        
+        free(a->password); //MEM31
+        a->password=NULL; //MEM01
     }
 }
 /**
@@ -95,7 +95,10 @@ void changeName(account *a){
     }else{
         fprintf(stderr,"ERROR: New username %s has %ld characters and exceeds the max username length of %d characters.\n",newLastName, lstNameLength, MAX_STRING_LENGTH);
     }
-    free(newLastName);
+    if(newLastName != NULL){ // error checking
+        free(newLastName); //MEM 31
+        newLastName = NULL; //MEM01
+    }
 }
 /**
  * Change an account's username
@@ -119,7 +122,10 @@ void changeUsername(account *a){
     else{
         fprintf(stderr,"ERROR: New username %s has %ld characters and exceeds the max username length of %d characters.\n",newUsername, usrNameLength, MAX_STRING_LENGTH);
     }
-    free(newUsername);
+    if(newUsername != NULL){
+        free(newUsername); //MEM31
+        newUsername = NULL; //MEM01
+    }
 }
 
 /**
@@ -145,7 +151,10 @@ void changePassword(account *a){
     else{
         fprintf(stderr,"ERROR: New password %s has %ld characters and exceeds the max username lenght of %d characters.\n",newPassword, passLength, MAX_STRING_LENGTH);
     }
-    free(newPassword);
+    if(newPassword != NULL){
+        free(newPassword); //MEM31
+         newPassword = NULL; //MEM01
+    }
 }
 
 
