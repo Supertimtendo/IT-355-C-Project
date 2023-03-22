@@ -17,12 +17,14 @@ typedef struct{
 }bank;
 
 account findAccount(bank *b, int accID);
+
+// intializeAccounts & freeAccounts are an example of recommendation: MEM00-C. Allocate and free memory in the same module, at the same level of abstraction
+// Both the methods for allocating/deallocating memory associated to the bank class are in the same module (this class)
 void initializeAccounts(bank *b);
-void freeAccounts(bank *b);
+void freeAccounts(bank *b); 
 void addAccount(bank *b); // creates account and adds it to the array of accounts
 void updateAccount(bank *b); // prompts user for information about updating their account
 bool fundsAvailable(account a, double amount);
-void transferFunds(bank *b);
 void deposit(bank *b);
 void withdrawal(bank *b);
 

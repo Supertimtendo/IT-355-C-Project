@@ -26,6 +26,9 @@ typedef struct{
 
 
 account createAccount();
+// Allocate strings & free strings are an example of MEM00
+// This memory is allocated/deallocated at the same level of abstraction (this class).
+// Freeing this memory in a different class such as the bank/main class would be a violation of this rule due to it be done in a different module.
 void allocateStrings(account *a);
 void freeStrings(account *a);
 void changeName(account *a);
@@ -36,5 +39,4 @@ void printAccount(account *a);
 void addFunds(account *a, float amount);
 double withdrawFunds(account *a, unsigned int amount);
 int getAccountID(account *a);
-bool validatePassword(account *a, char* enteredPass);
 #endif //ACCOUNT_H

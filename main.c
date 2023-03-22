@@ -154,7 +154,7 @@ int main(){
              * If the string is empty, an error message is still shown.
              * 
              */
-            if(fgets(userName, sizeof(userName),fp)){
+            if(fgets(userName, sizeof(userName),fp)){ //ARR38: An invalid pointer cannot be formed since we're specifying the maxium size with sizeof(userName) so fgets won't exceed the range for this pointer.
                 if(strlen(userName) == 0){
                     fprintf(stderr, "fgets() succeeded, but it is an empty string");
                 }
@@ -212,7 +212,7 @@ int main(){
             fprintf(stdout, "Last Name: %s\n", lastName);
             fprintf(stdout, "Balance: %f\n",balanceFloat);
             account accnt;
-            allocateStrings(&accnt);
+            allocateStrings(&accnt); // ARR38: We're guranteeing these sprintf calls wont form invalid pointers by allocating this memory before attempting to store data in them.
             sprintf(accnt.firstName, "%s", firstName);
             sprintf(accnt.lastName, "%s", lastName);
             sprintf(accnt.username, "%s", userName);
@@ -238,7 +238,7 @@ int main(){
     bool continueRunning = true;
     int userInput;
     while(continueRunning){
-        printf("Select from menu below:\n1. Create an Account.\n2. Update an Account.\n3. Withdraw\n4. Deposit.\n5. Transaction with Another Account.\n6. Exit\n");
+        printf("Select from menu below:\n1. Create an Account.\n2. Update an Account.\n3. Withdraw\n4. Deposit.\n5. Exit\n");
         //TODO: I/O rule guy check this for better option
         scanf("%d", &userInput);
 
@@ -247,8 +247,7 @@ int main(){
          case 2: updateAccount(&isuBank); break;
          case 3: withdrawal(&isuBank); break;
          case 4: deposit(&isuBank); break;
-         case 5: transferFunds(&isuBank); break;
-         case 6: continueRunning = false; printf("Exiting program.\n"); break;
+         case 5: continueRunning = false; printf("Exiting program.\n"); break;
          default: printf("Invalid input because select a number from the entry.\n"); break;
         }
 
