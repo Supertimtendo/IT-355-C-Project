@@ -229,10 +229,10 @@ double withdrawFunds(account *a, unsigned int amount){
      */
     if(amount <= FLT_MAX && amount >= FLT_MIN){
         // now that we've done the precondition test, can convert it to float type
-        float floatAmt = (float) amount;
+        float floatAmt = (float) amount; // Ex of REC INT18: We're converting this amount to the larger float size before comparing it in the below statement.
 
         // Another example of rule INT30-C: Ensuring that an underflow won't occur:
-        if((FLT_MIN+floatAmt) < a->balance){
+        if((FLT_MIN-a->balance) > floatAmt){
 
             // In a valid range so we can safely update the value
             a->balance = a->balance - floatAmt;

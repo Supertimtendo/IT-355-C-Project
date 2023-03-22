@@ -62,9 +62,12 @@ void initializeAccounts(bank *b)
    */
   b->curAccountCount = 0;
   b->maxAccounts = MAX_NUM_ACCOUNTS;
-  size_t accountSize = sizeof(account);                    // Size of an account
+  rsize_t accountSize = sizeof(account);                    // Size of an account
   size_t allAccountsSize = accountSize * MAX_NUM_ACCOUNTS; // Total size in memory to store all the accounts
-
+  if (allAccountsSize < accountSize || allAccountsSize <MAX_NUM_ACCOUNTS){ // post condition check for overflow
+    fprintf(stderr,"ERROR: allAccountsSize variable in intializeAccounts overflowed the size_t type.\n");
+    exit(1);
+  }
   b->accounts = (account *)malloc(allAccountsSize); // dynamically declaring memory for the accounts array
 }
 
@@ -140,14 +143,16 @@ void updateAccount(bank *b)
    * ARR39-C. Do not add or subtract a scaled integer to a pointer 
    */
   scanf("%s", userInputChar);
-  const long userInputNumber = strtol(userInputChar, &ptr,10);
+  const long userInputNumber = strtol(userInputChar, &ptr,10); 
   if (ptr == userInputChar||'\0' != *ptr|| LONG_MIN == userInputNumber||LONG_MAX == userInputNumber||ERANGE == errno||userInputNumber > INT_MAX||userInputNumber < INT_MIN)
   { // invalid input from user
     fprintf(stderr, "ERROR did not enter integer.\n");
   }
   else
   { // valid input from user
-    int accID = (int) userInputNumber;
+    // Example of rule INT31 we know this conversion is guranteed since these are both signed types and the long type is wider than the int type.
+    int accID = (int) userInputNumber;  
+    
     account foundAcc = findAccount(b, accID);
     if (foundAcc.accountID == -1)
     { // no account was found
@@ -213,14 +218,7 @@ bool fundsAvailable(account a, double amount)
   }
 }
 
-/**
- * Transfer cash from one account to another
 
- */
-void transferFunds(bank *b)
-{
-  // TODO: get user input for account to send money to, send money from, and amount.
-}
 void deposit(bank *b)
 {
   // TODO: get user input for account and amount
@@ -256,7 +254,6 @@ void deposit(bank *b)
     } 
     else
     { 
-      //printf("Current Balance:%f \n:",checkBalance(&foundAcc));
       printf("Enter a whole number amount to deposit into account:\n");
       scanf("%s", userInputChar);
       const long userInputNumber2 = strtol(userInputChar, &ptr,10);
@@ -307,6 +304,9 @@ void withdrawal(bank *b)
      * @brief Example of rule: EXP45-C. Do not perform assignments in section statements
      * The section statement does not perfrom aassignment
      */
+    // Ex of INT17: Define integer constants in an implementation independent manner:
+    // The LONG_MIN and LONG_MAX values are defined in limits.h which will set these values appopriately depending on the compiler and machine the code is executed on.
+    // const int MY_INT_MAX = 4294967296 (2^32) would a violation of this rule as the max size of an int will be implementation independent. So instead the values from the limits header should be used. 
   if (ptr == userInputChar||'\0' != *ptr|| LONG_MIN == userInputNumber||LONG_MAX == userInputNumber||ERANGE == errno||userInputNumber > INT_MAX||userInputNumber < INT_MIN)
   { // invalid input from user
     fprintf(stderr, "ERROR did not enter integer.\n");
@@ -321,7 +321,6 @@ void withdrawal(bank *b)
     }
     else
     { 
-      //printf("Current Balance:%f \n:",checkBalance(&foundAcc));
       printf("Enter amount to withdrawal from account:\n");
       scanf("%s", userInputChar);
       const long userInputNumber2 = strtol(userInputChar, &ptr,10);
