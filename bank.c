@@ -62,7 +62,7 @@ void initializeAccounts(bank *b)
    */
   b->curAccountCount = 0;
   b->maxAccounts = MAX_NUM_ACCOUNTS;
-  rsize_t accountSize = sizeof(account);                    // Size of an account
+  size_t accountSize = sizeof(account);                    // Size of an account
   size_t allAccountsSize = accountSize * MAX_NUM_ACCOUNTS; // Total size in memory to store all the accounts
   if (allAccountsSize < accountSize || allAccountsSize <MAX_NUM_ACCOUNTS){ // post condition check for overflow
     fprintf(stderr,"ERROR: allAccountsSize variable in intializeAccounts overflowed the size_t type.\n");
